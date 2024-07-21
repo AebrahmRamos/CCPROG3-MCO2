@@ -7,6 +7,7 @@ public class Room {
     private double price;
     private int roomNumber;
     private ArrayList<Reservation> reservations;
+    private String roomType;
     
     /**
      * Constructor for the Room class, sets a default price of 1299.0
@@ -16,6 +17,15 @@ public class Room {
         this.price = 1299.0;
         this.roomNumber = roomNumber;
         this.reservations = new ArrayList<>();
+        this.roomType = "standard";
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public String getRoomType() {
+        return this.roomType;
     }
 
 
