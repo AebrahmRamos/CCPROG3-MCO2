@@ -394,6 +394,7 @@ public class ManagementSystem {
                     break;
                 }
             }
+
             if (totalRooms >= 50) {
                 System.out.println("Hotel " + name + " already has 50 rooms, cannot add more");
             } else {
@@ -403,10 +404,12 @@ public class ManagementSystem {
                 }
 
                 if(confirmAction(scanner)) {
+                    System.out.println("Enter type of room to add(standard, deluxe, executive): ");
+                    String type = scanner.nextLine();
                     for (Hotel hotel : hotels) {
                         if (hotel.getName().equals(name)) {
                             for (int i = 0; i < rooms; i++) {
-                                hotel.addRoom();
+                                hotel.addRoom(type);
                             }
                             System.out.println(rooms + " rooms added to " + hotel.getName() + ".");
                         } 
@@ -530,7 +533,7 @@ public class ManagementSystem {
                 System.out.println("Hotel: " + hotel.getName());
                 for (Room room : hotel.getRooms()) {
                     if (!roomOccupied(hotels, hotel.getName(), room.getRoomNumber(), checkIn, checkOut)) {
-                        System.out.println("Room " + room.getRoomNumber());
+                        System.out.println("Room " + room.getRoomNumber() + " || Type: " + room.getRoomType() + " || Price: " + room.getPrice());
                         count++;
                         hotelCount++;
                     }

@@ -1,7 +1,7 @@
 public class DeluxeRoom extends Room {
-    public DeluxeRoom(int roomNumber, int price) {
+    public DeluxeRoom(int roomNumber) {
         super(roomNumber);
-        this.setPrice(price*1.2);
+        this.setPrice(this.getPrice()*1.2);
         this.setRoomType("deluxe");
     }
 }

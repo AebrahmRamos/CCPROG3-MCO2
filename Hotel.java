@@ -67,8 +67,14 @@ public class Hotel {
     /**
      * Adds a room to the hotel
      */
-    public void addRoom(){
-        rooms.add(new Room(rooms.size()+1));
+    public void addRoom(String type){
+        if (type.equals("standard")) {
+            rooms.add(new Room(rooms.size()+1));
+        } else if (type.equals("executive")) {
+            rooms.add(new ExecutiveRoom(rooms.size()+1));
+        } else if (type.equals("deluxe")) {
+            rooms.add(new DeluxeRoom(rooms.size()+1));
+        }
     }
     
     /**

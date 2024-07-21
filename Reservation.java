@@ -71,4 +71,26 @@ public class Reservation {
         return this.room;
     }
 
+
+    public boolean applyDiscount(String discountCode) {
+        if (discountCode.equals("I_WORK_HERE")) {
+            this.totalPrice *= 0.9;
+        } else if (discountCode.equals("STAY4_GET1")) {
+            if ((checkOut - checkIn) >= 5) {
+                this.totalPrice = room.getPrice() * 4;
+                return true;
+            } else {
+                return false;
+            }
+        } else if (discountCode.equals("PAYDAY")){
+            if (checkIn <= 15 && checkOut > 15 || checkIn <= 30 && checkOut > 30) {
+                this.totalPrice *= 0.93;
+                return true;
+            } else {
+                return false;
+            }
+        } 
+        return false;
+    }
+
 }
