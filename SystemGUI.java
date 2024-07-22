@@ -15,9 +15,7 @@ public class SystemGUI extends JFrame{
 
   private JTextField tfName;
   private JTextArea taDescription;
-
-  private JLabel lblPage;
-
+  
   public SystemGUI(){
     super("Hotel Management System");
     setLayout(new BorderLayout());
@@ -34,20 +32,29 @@ public class SystemGUI extends JFrame{
   }
 
   private void init() {
-    JPanel southPanel = new JPanel();
-    southPanel.setLayout(new FlowLayout());
-    southPanel.setBackground(Color.decode("#CE2211"));
+    JPanel westPanel = new JPanel();
+    westPanel.setLayout(new GridLayout(6, 1));
+    westPanel.setBackground(Color.decode("#f5f5f5"));
 
     btnAddHotel = new JButton("Add Hotel");
-    southPanel.add(btnAddHotel);
+    westPanel.add(btnAddHotel);
 
     btnViewHotel = new JButton("View Hotel");
-    southPanel.add(btnViewHotel);
+    westPanel.add(btnViewHotel);
 
     btnManageHotel = new JButton("Manage Hotel");
-    southPanel.add(btnManageHotel);
+    westPanel.add(btnManageHotel);
 
-    add(southPanel, BorderLayout.SOUTH);
+    btnSimBooking = new JButton("Simulate Booking");
+    westPanel.add(btnSimBooking);
+
+    btnPrintHotels = new JButton("Print Hotels");
+    westPanel.add(btnPrintHotels);
+
+    btnExit = new JButton("Exit");
+    westPanel.add(btnExit);
+
+    add(westPanel, BorderLayout.WEST);
   }
 
 

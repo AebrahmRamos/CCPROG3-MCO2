@@ -38,7 +38,21 @@ public class Controller implements ActionListener, DocumentListener{
   @Override
   public void actionPerformed(ActionEvent e) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+    if(e.getActionCommand().equals("Add Hotel")){
+      // Add Hotel
+    }else if(e.getActionCommand().equals("View Hotel")){
+      // View Hotel
+    }else if(e.getActionCommand().equals("Manage Hotel")){
+      // Manage Hotel
+    }else if(e.getActionCommand().equals("Simulate Booking")){
+      // Simulate Booking
+    }else if(e.getActionCommand().equals("Print Hotels")){
+      // Print Hotels
+    }else if(e.getActionCommand().equals("Exit")){
+      // Exit
+      System.exit(0);
+    }
+
   }
   
 }
