@@ -44,6 +44,11 @@ public class Controller implements ActionListener, DocumentListener{
       systemGUI.dispose();
       AddHotelGUI addHotelGUI = new AddHotelGUI();
     }
+
+    if(e.getSource() == addHotelGUI.getBackButton()){
+      addHotelGUI.dispose();
+      SystemGUI systemGUI = new SystemGUI();
+    }
     
   }
   

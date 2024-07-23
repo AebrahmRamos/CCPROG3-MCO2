@@ -28,13 +28,13 @@ public class SystemGUI extends JFrame{
         exitButton = createStyledButton("Exit");
 
         // Initialize the frame
-        init();
+        menu();
 
         // Make frame visible
         setVisible(true);
       }
       
-    public void init() {
+    public void menu() {
 
       // Create Header Panel
       JPanel headerPanel = new JPanel();

@@ -1,7 +1,6 @@
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,23 +9,21 @@ import java.awt.event.ActionListener;
 
 public class AddHotelGUI {
   JFrame frame = new JFrame();
-  JLabel label = new JLabel("ADDED HOTEL");
 
   private JButton backButton;
 
   public AddHotelGUI() {
-    label.setBounds(20, 50, 100, 30);
-    label.setFont(new Font(null, Font.PLAIN, 25));
-
     frame.setSize(500, 400);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLocationRelativeTo(null);
     frame.setLocationRelativeTo(null);
     frame.setLayout(null);
     frame.setVisible(true);
-    frame.add(label);
 
     backButton = createStyledButton("Back");
+    //place the back button at the top left corner of the frame
+    backButton.setBounds(10, 10, 50, 30);
+    frame.add(backButton);
   }
 
   private JButton createStyledButton(String text) {
