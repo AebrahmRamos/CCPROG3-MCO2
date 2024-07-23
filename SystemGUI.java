@@ -4,6 +4,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+import java.util.Scanner;
+
 
 public class SystemGUI extends JFrame{
   private JButton btnAddHotel;
@@ -15,7 +17,7 @@ public class SystemGUI extends JFrame{
 
   private JTextField tfName;
   private JTextArea taDescription;
-  
+
   public SystemGUI(){
     super("Hotel Management System");
     setLayout(new BorderLayout());
@@ -55,6 +57,18 @@ public class SystemGUI extends JFrame{
     westPanel.add(btnExit);
 
     add(westPanel, BorderLayout.WEST);
+
+
+    JPanel centerPanel = new JPanel();
+    centerPanel.setLayout(new GridLayout(2, 1));
+
+    JPanel namePanel = new JPanel();
+    namePanel.setLayout(new FlowLayout());
+    namePanel.add(new JLabel("Name: "));
+    tfName = new JTextField(20);
+    namePanel.add(tfName);
+
+    centerPanel.add(namePanel);
   }
 
 
