@@ -7,8 +7,10 @@ public class Driver {
     public static void main(String[] args) {
         ManagementSystem managementSystem = new ManagementSystem();
         //managementSystem.menuSystem();
-        SystemGUI systemGUI = new SystemGUI();
-        Controller controller = new Controller(systemGUI, managementSystem);
+        MainView mainView = new MainView();
+        MainController mainController = new MainController(mainView);
+        mainView.setVisible(true);
+        // Controller controller = new Controller(systemGUI, managementSystem);
 
     }
 }
