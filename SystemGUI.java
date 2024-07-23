@@ -1,88 +1,112 @@
+// HotelView.java
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-import java.util.Scanner;
-
 
 public class SystemGUI extends JFrame{
-  private JButton btnAddHotel;
-  private JButton btnViewHotel;
-  private JButton btnManageHotel;
-  private JButton btnSimBooking;
-  private JButton btnPrintHotels;
-  private JButton btnExit;
+    private JButton addHotelButton;
+    private JButton viewHotelButton;
+    private JButton manageHotelButton;
+    private JButton simulateBookingButton;
+    private JButton printHotelsButton;
+    private JButton exitButton;
 
-  private JTextField tfName;
-  private JTextArea taDescription;
+    public SystemGUI() {
+        // Set frame properties
+        setTitle("Hotel Management System");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-  public SystemGUI(){
-    super("Hotel Management System");
-    setLayout(new BorderLayout());
+        // Create buttons
+        addHotelButton = createStyledButton("Add Hotel");
+        viewHotelButton = createStyledButton("View Hotel");
+        manageHotelButton = createStyledButton("Manage Hotel");
+        simulateBookingButton = createStyledButton("Simulate Booking");
+        printHotelsButton = createStyledButton("Print Hotels");
+        exitButton = createStyledButton("Exit");
 
-    init();
+        // Initialize the frame
+        init();
 
-    setSize(800, 600);
+        // Make frame visible
+        setVisible(true);
+      }
+      
+    public void init() {
 
-    setResizable(false);
+      // Create Header Panel
+      JPanel headerPanel = new JPanel();
+      headerPanel.setLayout(new FlowLayout());
+      headerPanel.setBackground(new Color(45, 48, 50));
+      headerPanel.setPreferredSize(new Dimension(500, 50));
+      
+      JLabel headerLabel = new JLabel("Hotel Management System");
+      headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+      headerLabel.setForeground(Color.WHITE);
+      headerPanel.add(headerLabel);
+      headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+      add(headerPanel, BorderLayout.NORTH);
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      // Create panel and layout
+      JPanel menuPanel = new JPanel();
+      menuPanel.setLayout(new GridLayout(3, 2, 15, 15));
+      menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+      menuPanel.setBackground(Color.LIGHT_GRAY); // Set a background color
+      
+      // Add buttons to the menuPanel
+      menuPanel.add(addHotelButton);
+      menuPanel.add(viewHotelButton);
+      menuPanel.add(manageHotelButton);
+      menuPanel.add(simulateBookingButton);
+      menuPanel.add(printHotelsButton);
+      menuPanel.add(exitButton);
 
-    setVisible(true);
-  }
+      // Add menuPanel to the frame
+      add(menuPanel, BorderLayout.CENTER);
+    }
 
-  private void init() {
-    JPanel westPanel = new JPanel();
-    westPanel.setLayout(new GridLayout(6, 1));
-    westPanel.setBackground(Color.decode("#f5f5f5"));
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(45, 48, 50));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEtchedBorder());
+        return button;
+    }
 
-    btnAddHotel = new JButton("Add Hotel");
-    westPanel.add(btnAddHotel);
+    public void setActionListener(ActionListener actionListener) {
+        addHotelButton.addActionListener(actionListener);
+        viewHotelButton.addActionListener(actionListener);
+        manageHotelButton.addActionListener(actionListener);
+        simulateBookingButton.addActionListener(actionListener);
+        printHotelsButton.addActionListener(actionListener);
+        exitButton.addActionListener(actionListener);
+    }
 
-    btnViewHotel = new JButton("View Hotel");
-    westPanel.add(btnViewHotel);
+    public JButton getAddHotelButton() {
+        return addHotelButton;
+    }
 
-    btnManageHotel = new JButton("Manage Hotel");
-    westPanel.add(btnManageHotel);
+    public JButton getViewHotelButton() {
+        return viewHotelButton;
+    }
 
-    btnSimBooking = new JButton("Simulate Booking");
-    westPanel.add(btnSimBooking);
+    public JButton getManageHotelButton() {
+        return manageHotelButton;
+    }
 
-    btnPrintHotels = new JButton("Print Hotels");
-    westPanel.add(btnPrintHotels);
+    public JButton getSimulateBookingButton() {
+        return simulateBookingButton;
+    }
 
-    btnExit = new JButton("Exit");
-    westPanel.add(btnExit);
+    public JButton getPrintHotelsButton() {
+        return printHotelsButton;
+    }
 
-    add(westPanel, BorderLayout.WEST);
-
-
-    JPanel centerPanel = new JPanel();
-    centerPanel.setLayout(new GridLayout(2, 1));
-
-    JPanel namePanel = new JPanel();
-    namePanel.setLayout(new FlowLayout());
-    namePanel.add(new JLabel("Name: "));
-    tfName = new JTextField(20);
-    namePanel.add(tfName);
-
-    centerPanel.add(namePanel);
-  }
-
-
-  public void setActionListener(ActionListener actionListener){
-    btnAddHotel.addActionListener(actionListener);
-    btnViewHotel.addActionListener(actionListener);
-    btnManageHotel.addActionListener(actionListener);
-    btnSimBooking.addActionListener(actionListener);
-    btnPrintHotels.addActionListener(actionListener);
-    btnExit.addActionListener(actionListener);
-  }
-
-  public void setDocumentListener(DocumentListener documentListener){
-    tfName.getDocument().addDocumentListener(documentListener);
-    taDescription.getDocument().addDocumentListener(documentListener);
-  }
+    public JButton getExitButton() {
+        return exitButton;
+    }
 }

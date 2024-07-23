@@ -8,13 +8,13 @@ public class Controller implements ActionListener, DocumentListener{
 
   private SystemGUI systemGUI;
   private ManagementSystem managementSystem;
+  private AddHotelGUI addHotelGUI;
 
   public Controller(SystemGUI systemGUI, ManagementSystem managementSystem){
     this.systemGUI = systemGUI;
     this.managementSystem = managementSystem;
 
     systemGUI.setActionListener(this);
-    systemGUI.setDocumentListener(this);
   }
 
   @Override
@@ -37,22 +37,14 @@ public class Controller implements ActionListener, DocumentListener{
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    // TODO Auto-generated method stub
-    if(e.getActionCommand().equals("Add Hotel")){
-      // Add Hotel
-    }else if(e.getActionCommand().equals("View Hotel")){
-      // View Hotel
-    }else if(e.getActionCommand().equals("Manage Hotel")){
-      // Manage Hotel
-    }else if(e.getActionCommand().equals("Simulate Booking")){
-      // Simulate Booking
-    }else if(e.getActionCommand().equals("Print Hotels")){
-      // Print Hotels
-    }else if(e.getActionCommand().equals("Exit")){
-      // Exit
-      System.exit(0);
+    if(e.getSource() == systemGUI.getExitButton()){
+      systemGUI.dispose();
     }
-
+    else if(e.getSource() == systemGUI.getAddHotelButton()){
+      systemGUI.dispose();
+      AddHotelGUI addHotelGUI = new AddHotelGUI();
+    }
+    
   }
   
 }
