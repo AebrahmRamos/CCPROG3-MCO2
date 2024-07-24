@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * The representation class holds the information of a reservation made by a guest
  */
@@ -7,6 +9,7 @@ public class Reservation {
     private int checkOut;    
     private double totalPrice;
     private Room room;  
+
 
     /**
      * Constructor for the Reservation class
@@ -72,25 +75,32 @@ public class Reservation {
     }
 
 
-    public boolean applyDiscount(String discountCode) {
+    public boolean applyDiscount(String discountCode, Map<Integer, Double> modifiedDates) {
         if (discountCode.equals("I_WORK_HERE")) {
             this.totalPrice *= 0.9;
         } else if (discountCode.equals("STAY4_GET1")) {
             if ((checkOut - checkIn) >= 5) {
-                this.totalPrice = room.getPrice() * 4;
+                totalPrice = 0;
+                for (int i = checkIn+1; i < checkOut; i++) {
+                    totalPrice += room.getPrice() * modifiedDates.get(i);
+                }
                 return true;
-            } else {
-                return false;
-            }
+            } 
         } else if (discountCode.equals("PAYDAY")){
             if (checkIn <= 15 && checkOut > 15 || checkIn <= 30 && checkOut > 30) {
                 this.totalPrice *= 0.93;
                 return true;
-            } else {
-                return false;
-            }
+            } 
         } 
         return false;
+    }
+
+    public void updateTotalPrice(Map<Integer, Double> modifiedDates) {
+        totalPrice = 0;
+        for (int i = checkIn; i < checkOut; i++) {
+            System.out.println("\n i: " + i + " price: " + room.getPrice() + " modifiedDates: " + modifiedDates.get(i+1));
+            totalPrice += room.getPrice() * modifiedDates.get(i+1);
+        }
     }
 
 }

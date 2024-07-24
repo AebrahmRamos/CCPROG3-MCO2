@@ -208,7 +208,8 @@ public class ManagementSystem {
             System.out.println("[4] Update Room Price");
             System.out.println("[5] Remove Reservation");
             System.out.println("[6] Remove Hotel");
-            System.out.println("[7] Back to Main Menu");
+            System.out.println("[7] Date Price Modifier");
+            System.out.println("[8] Back to Main Menu");
             System.err.print("Enter your choice: ");
             choice = getInt(scanner);
             printBorder();
@@ -238,6 +239,14 @@ public class ManagementSystem {
                         break;
                     }
                 case 7:
+                    String hotelName = getHotelInput(hotels, scanner);
+                    for (Hotel hotel : hotels) {
+                        if (hotel.getName().equals(hotelName)) {
+                            hotel.addModifiedDates(scanner);
+                        }
+                    }
+                    break;
+                case 8:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -245,6 +254,9 @@ public class ManagementSystem {
             }
         }
     }
+
+
+
 
     /**
      * Method for changing a hotel's name
@@ -568,6 +580,26 @@ public class ManagementSystem {
                         }
                     }
                 }
+                for (Hotel hotel : hotels) {
+                    if (hotel.getName().equals(hotelName)) {
+                        for (Reservation reservation : hotel.getReservations()) {
+                            if (reservation.getGuestName().equals(guestName)) {
+                                reservation.updateTotalPrice(hotel.getModifiedDates());
+                                System.out.println("Price before discount: " + reservation.getTotal());
+                                System.out.println("Enter discount code (N/A if none): ");
+                                String discountCode = scanner.nextLine();
+                                while (!discountCode.equals("N/A") && !reservation.applyDiscount(discountCode, hotel.getModifiedDates())) {
+                                    System.out.println("Invalid discount code. Enter a valid one: ");
+                                    discountCode = scanner.nextLine();
+                                }
+                                if (!discountCode.equals("N/A")) {
+                                    System.out.println("Price after discount: " + reservation.getTotal());
+                                }
+                            }
+                        }
+                    }
+                }
+
             } else {
                 System.out.println("No rooms available for booking.");
             }
