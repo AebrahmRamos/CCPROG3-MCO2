@@ -206,6 +206,8 @@ public class MainView extends JFrame {
 
     
 
+    
+
     public void display(String text) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());

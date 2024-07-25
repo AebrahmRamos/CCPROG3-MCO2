@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 /**
  * This class represents a hotel containing the classes rooms and reservations
  */
@@ -7,6 +8,7 @@ public class Hotel {
     private String name;
     private ArrayList<Reservation> reservations;
     private ArrayList<Room> rooms;
+    private Map<Integer, Double> modifiedDates;
     // private double earningsPerMonth;
 
     /**
@@ -23,6 +25,10 @@ public class Hotel {
             this.rooms.add(new Room(this.rooms.size()+1));
         }
         // this.earningsPerMonth = 0;
+        this.modifiedDates = new HashMap<>();
+        for (int i = 1; i <= 31; i++) {
+            modifiedDates.put(i, 1.0);
+        }
     }
     
     /**
@@ -34,6 +40,10 @@ public class Hotel {
         this.rooms = new ArrayList<>();
         this.reservations = new ArrayList<>();
         this.rooms.add(new Room(1));
+        this.modifiedDates = new HashMap<>();
+        for (int i = 1; i <= 31; i++) {
+            modifiedDates.put(i, 1.0);
+        }
     }
 
     /**
@@ -187,5 +197,29 @@ public class Hotel {
      */
     public void printBorder(){
         System.out.println("\n--------------------------------------------------\n");
+    }
+
+
+    public void addModifiedDates(Scanner scanner){
+        int start, end;
+        double rate;
+
+        do {
+            System.out.println("Enter the start date: ");
+            start = scanner.nextInt();
+            System.out.println("Enter the end date: ");
+            end = scanner.nextInt();
+            System.out.println("Enter the rate: ");
+            rate = scanner.nextDouble();
+        } while (start < 1 || start > 31 || end < 1 || end > 31 || rate < 0.5 || rate > 1.5 || start > end);
+        
+        for (int i = start; i <= end; i++) {
+            this.modifiedDates.put(i, rate);
+            System.out.println("Date " + i + " has been updated to " + rate);
+        }
+    }
+
+    public Map<Integer, Double> getModifiedDates(){
+        return modifiedDates;
     }
 }
