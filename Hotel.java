@@ -181,14 +181,16 @@ public class Hotel {
      */
     public void formattedReservation() {
         System.out.println("Hotel: " + getName());
-        System.out.printf("%-5s | %-10s | %-8s | %-9s%n", "Room", "Guest Name", "Check-in", "Check-out");
+        System.out.printf("%-5s | %-10s | %-8s | %-9s% | %-10s%n", "Room", "Guest Name", "Check-in", "Check-out", "Room Type");
         printBorder();
         for (Reservation reservation : getReservations()) {
-            System.out.printf("%-5d | %-10s | %-8d | %-9d%n",
+            System.out.printf("%-5d | %-10s | %-8d | %-9d% | %-10s%n",
                 reservation.getRoom().getRoomNumber(),
                 reservation.getGuestName(),
                 reservation.getCheckIn(),
-                reservation.getCheckOut());
+                reservation.getCheckOut(),
+                reservation.getRoom().getRoomType()
+                );
         }
     }
 
