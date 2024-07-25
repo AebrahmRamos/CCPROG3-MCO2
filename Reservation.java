@@ -98,7 +98,6 @@ public class Reservation {
     public void updateTotalPrice(Map<Integer, Double> modifiedDates) {
         totalPrice = 0;
         for (int i = checkIn; i < checkOut; i++) {
-            System.out.println("\n i: " + i + " price: " + room.getPrice() + " modifiedDates: " + modifiedDates.get(i+1));
             totalPrice += room.getPrice() * modifiedDates.get(i+1);
         }
     }
