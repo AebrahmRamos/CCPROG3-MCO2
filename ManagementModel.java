@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Driver class is the main entry point of the program
  */
-public class ManagementSystem {
+public class ManagementModel {
 
         /**
          * Displays the menu system for the Hotel Reservation System.
@@ -210,8 +210,6 @@ public class ManagementSystem {
             System.out.println("[6] Remove Hotel");
             System.out.println("[7] Date Price Modifier");
             System.out.println("[8] Back to Main Menu");
-            System.out.println("[7] Date Price Modifier");
-            System.out.println("[8] Back to Main Menu");
             System.err.print("Enter your choice: ");
             choice = getInt(scanner);
             printBorder();
@@ -366,15 +364,6 @@ public class ManagementSystem {
             System.out.print("Hotel name already exists. Enter a new one: ");
             name = scanner.nextLine();
         }
-
-        System.out.println("Do you want to create a hotel with a default 1 room or specify the number of rooms?");
-        System.out.println("[1] Default 1 room");
-        System.out.println("[2] Specify number of standard rooms.\n    (Deluxe and Executive Rooms can be added later)");
-        System.out.print("Enter your choice: ");
-        int choice = getInt(scanner);
-        if (choice == 1) {
-            hotels.add(new Hotel(name));
-        } else if(choice == 2) {
             System.out.print("Enter the number of rooms: ");
             int rooms = getInt(scanner);
             while (rooms < 1 || rooms > 50) {
@@ -382,7 +371,6 @@ public class ManagementSystem {
                 rooms = getInt(scanner);
             }
             hotels.add(new Hotel(name, rooms));
-        }
 
         System.out.print(name + " successfully added to the list of hotels");
     }
@@ -526,7 +514,7 @@ public class ManagementSystem {
      */
     public void addReservation(ArrayList<Hotel> hotels, Scanner scanner) {
         if (!hotels.isEmpty()) {
-            System.out.println("\nEnter guest name: ");
+            System.out.println("Enter guest name: ");
             String guestName = scanner.nextLine();
             System.out.println("Enter the check-in date: ");
             int checkIn = getInt(scanner);
@@ -544,11 +532,10 @@ public class ManagementSystem {
             int count = 0, hotelCount = 0;
             System.out.println("Here are all the available rooms for each hotel: ");
             for (Hotel hotel : hotels) {
-                System.out.println("\nHotel: " + hotel.getName());
-                System.out.printf("%-5s || %-20s || %-15s%n", "Room", "Type", "Price");
+                System.out.println("Hotel: " + hotel.getName());
                 for (Room room : hotel.getRooms()) {
                     if (!roomOccupied(hotels, hotel.getName(), room.getRoomNumber(), checkIn, checkOut)) {
-                        System.out.printf("%-5d || %-20s || %-15.2f%n", room.getRoomNumber(), room.getRoomType(), room.getPrice());
+                        System.out.println("Room " + room.getRoomNumber() + " || Type: " + room.getRoomType() + " || Price: " + room.getPrice());
                         count++;
                         hotelCount++;
                     }
@@ -588,7 +575,7 @@ public class ManagementSystem {
                         for (Reservation reservation : hotel.getReservations()) {
                             if (reservation.getGuestName().equals(guestName)) {
                                 reservation.updateTotalPrice(hotel.getModifiedDates());
-                                System.out.printf("Total Price: %.2f\n", reservation.getTotal());
+                                System.out.println("Price before discount: " + reservation.getTotal());
                                 System.out.println("Enter discount code (N/A if none): ");
                                 String discountCode = scanner.nextLine();
                                 while (!discountCode.equals("N/A") && !reservation.applyDiscount(discountCode, hotel.getModifiedDates())) {
@@ -596,7 +583,7 @@ public class ManagementSystem {
                                     discountCode = scanner.nextLine();
                                 }
                                 if (!discountCode.equals("N/A")) {
-                                    System.out.println("Total Discounted Price: " + reservation.getTotal());
+                                    System.out.println("Price after discount: " + reservation.getTotal());
                                 }
                             }
                         }
