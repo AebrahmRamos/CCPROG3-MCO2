@@ -1,4 +1,3 @@
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -46,7 +45,6 @@ public class MainController {
                 if (!hotelName.trim().isEmpty() && numRooms > 1 && numRooms <= 50 && !isHotelNameDuplicated(hotelName)) {
                     hotels.add(new Hotel(hotelName, numRooms));
                     view.displayDefaultCenterPanel();
-                    updateDisplay();
                 } else {
                     JOptionPane.showMessageDialog(view, "Please enter a valid hotel name and number of rooms.");
                 }
@@ -64,7 +62,8 @@ public class MainController {
         view.setViewHotelDetailsButtonListener(e -> {
             // Logic for viewing hotel details
             view.showHotelOverviewForm();
-            
+            viewHotelInformation();
+                       
         });
 
         view.setViewSpecificRoomButtonListener(e -> {
@@ -80,6 +79,22 @@ public class MainController {
         view.setViewNumberOfBookedandAvailableRoomsButtonListener(e -> {
             // Logic for viewing booked and available rooms
             view.showAvailableRooms();
+        });
+    }
+
+    public void viewHotelInformation() {
+        view.setSearchHotelButtonListener(e -> {
+            //view the hotel name, number of rooms, and earnings per month of a selected hotel
+            String hotelName = view.getHotelName();
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                    view.displayHotelInformation(hotel.getName(), hotel.getRooms().size(), hotel.getEarningsPerMonth());
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+
+
         });
     }
 
@@ -120,21 +135,5 @@ public class MainController {
             // Logic for adding reservation
             view.showSimulateBooking();
         });
-    }
-
-    private Hotel findHotelByName(String hotelName) {
-        return hotels.stream().filter(hotel -> hotel.getName().equalsIgnoreCase(hotelName)).findFirst().orElse(null);
-    }
-
-    private void updateDisplay() {
-        StringBuilder displayText = new StringBuilder();
-        for (Hotel hotel : hotels) {
-            displayText.append("Hotel: ").append(hotel.getName()).append("\n");
-            for (Room room : hotel.getRooms()) {
-                displayText.append("  Room ").append(room.getRoomNumber()).append(": ").append(room.getRoomType()).append("\n");
-            }
-            displayText.append("\n");
-        }
-        view.display(displayText.toString());
     }
 }

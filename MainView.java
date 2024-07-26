@@ -154,7 +154,7 @@ public class MainView extends JFrame {
         centerPanel.setLayout(new FlowLayout());
 
         JLabel hotelName = new JLabel("Search Hotel:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         searchButton = new JButton("Search");
 
         centerPanel.add(hotelName);
@@ -170,7 +170,7 @@ public class MainView extends JFrame {
         centerPanel.setLayout(new FlowLayout());
 
         JLabel hotelName = new JLabel("Search Hotel:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
         JTextField roomNumberField = new JTextField(25);
         searchButton = new JButton("Search");
@@ -191,7 +191,7 @@ public class MainView extends JFrame {
 
         searchButton = new JButton("Search");
         JLabel hotelName = new JLabel("Search Hotel:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel guestName = new JLabel("Guest Name:");
         JTextField guestNameField = new JTextField(25);
 
@@ -211,7 +211,7 @@ public class MainView extends JFrame {
 
 
         JLabel hotelName = new JLabel("Search Hotel:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel checkIn = new JLabel("Check In:");
         JTextField checkInField = new JTextField(2);
         JLabel checkOut = new JLabel("Check Out:");
@@ -259,7 +259,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel newHotelName = new JLabel("New Hotel Name:");
         JTextField newHotelNameField = new JTextField(25);
         JButton changeNameButton = new JButton("Change Name");
@@ -280,7 +280,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel numRooms = new JLabel("Number of Rooms:");
         JTextField numRoomsField = new JTextField(25);
         JButton addRoomButton = new JButton("Add Room");
@@ -301,7 +301,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
         JTextField roomNumberField = new JTextField(25);
         JButton removeRoomButton = new JButton("Remove Room");
@@ -322,7 +322,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
         JTextField roomNumberField = new JTextField(25);
         JLabel newPrice = new JLabel("New Price:");
@@ -347,7 +347,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JLabel guestName = new JLabel("Guest Name:");
         JTextField guestNameField = new JTextField(25);
         JButton removeReservationButton = new JButton("Remove Reservation");
@@ -368,7 +368,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel hotelName = new JLabel("Hotel Name:");
-        JTextField hotelNameField = new JTextField(25);
+        hotelNameField = new JTextField(25);
         JButton removeHotel = new JButton("Remove Hotel");
 
         centerPanel.add(hotelName);
@@ -418,7 +418,35 @@ public class MainView extends JFrame {
     }
 
 
+    public void displayHotelInformation(String hotelName, int numRooms, double earnings) {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new BorderLayout());
     
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
+    
+        JLabel hotelNameLabel = new JLabel("Hotel Name: " + hotelName);
+        hotelNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        hotelNameLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel numRoomsLabel = new JLabel("Number of Rooms: " + numRooms);
+        numRoomsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        numRoomsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel earningsLabel = new JLabel("Earnings per Month: " + earnings);
+        earningsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        earningsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        infoPanel.add(hotelNameLabel);
+        infoPanel.add(numRoomsLabel);
+        infoPanel.add(earningsLabel);
+    
+        centerPanel.add(infoPanel, BorderLayout.CENTER);
+    
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
 
     
 
