@@ -26,6 +26,7 @@ public class MainView extends JFrame {
     private JButton removeReservationButton;
     private JButton removeHotel;   
     private JButton addReservationButton;
+    private JButton viewHotelDetailsButton;
 
     public MainView() {
         // Set up the frame
@@ -134,7 +135,7 @@ public class MainView extends JFrame {
         centerPanel.setLayout(new GridLayout(4, 1, 10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JButton viewHotelDetailsButton = new JButton("View Hotel");
+        viewHotelDetailsButton = new JButton("View Hotel");
         viewSpecificRoom = new JButton("View Specific Room");
         viewReservation = new JButton("View Reservation");
         viewNumberOfBookedandAvailableRooms = new JButton("View Number of Booked and Available Rooms");
@@ -143,6 +144,87 @@ public class MainView extends JFrame {
         centerPanel.add(viewSpecificRoom);
         centerPanel.add(viewReservation);
         centerPanel.add(viewNumberOfBookedandAvailableRooms);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showHotelOverviewForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+        JLabel hotelName = new JLabel("Search Hotel:");
+        JTextField hotelNameField = new JTextField(25);
+        searchButton = new JButton("Search");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(searchButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showRoomOverviewForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+        JLabel hotelName = new JLabel("Search Hotel:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel roomNumber = new JLabel("Room Number:");
+        JTextField roomNumberField = new JTextField(25);
+        searchButton = new JButton("Search");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(roomNumber);
+        centerPanel.add(roomNumberField);
+        centerPanel.add(searchButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showReservationsForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+        searchButton = new JButton("Search");
+        JLabel hotelName = new JLabel("Search Hotel:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel guestName = new JLabel("Guest Name:");
+        JTextField guestNameField = new JTextField(25);
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(guestName);
+        centerPanel.add(guestNameField);
+        centerPanel.add(searchButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showAvailableRooms() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+
+        JLabel hotelName = new JLabel("Search Hotel:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel checkIn = new JLabel("Check In:");
+        JTextField checkInField = new JTextField(2);
+        JLabel checkOut = new JLabel("Check Out:");
+        JTextField checkOutField = new JTextField(2);
+        searchButton = new JButton("Search");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(checkIn);
+        centerPanel.add(checkInField);
+        centerPanel.add(checkOut);
+        centerPanel.add(checkOutField);
+        centerPanel.add(searchButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -171,25 +253,156 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    public void showChangeHotelName() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel newHotelName = new JLabel("New Hotel Name:");
+        JTextField newHotelNameField = new JTextField(25);
+        JButton changeNameButton = new JButton("Change Name");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(newHotelName);
+        centerPanel.add(newHotelNameField);
+        centerPanel.add(changeNameButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showAddRoomForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel numRooms = new JLabel("Number of Rooms:");
+        JTextField numRoomsField = new JTextField(25);
+        JButton addRoomButton = new JButton("Add Room");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(numRooms);
+        centerPanel.add(numRoomsField);
+        centerPanel.add(addRoomButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showRemoveRoomForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel roomNumber = new JLabel("Room Number:");
+        JTextField roomNumberField = new JTextField(25);
+        JButton removeRoomButton = new JButton("Remove Room");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(roomNumber);
+        centerPanel.add(roomNumberField);
+        centerPanel.add(removeRoomButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showChangePriceForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel roomNumber = new JLabel("Room Number:");
+        JTextField roomNumberField = new JTextField(25);
+        JLabel newPrice = new JLabel("New Price:");
+        JTextField newPriceField = new JTextField(25);
+        JButton changePriceButton = new JButton("Change Price");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(roomNumber);
+        centerPanel.add(roomNumberField);
+        centerPanel.add(newPrice);
+        centerPanel.add(newPriceField);
+        centerPanel.add(changePriceButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showRemoveReservationForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JLabel guestName = new JLabel("Guest Name:");
+        JTextField guestNameField = new JTextField(25);
+        JButton removeReservationButton = new JButton("Remove Reservation");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(guestName);
+        centerPanel.add(guestNameField);
+        centerPanel.add(removeReservationButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showRemoveHotelForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        JTextField hotelNameField = new JTextField(25);
+        JButton removeHotel = new JButton("Remove Hotel");
+
+        centerPanel.add(hotelName);
+        centerPanel.add(hotelNameField);
+        centerPanel.add(removeHotel);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
     public void showSimulateBooking() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
+        JLabel guestName = new JLabel("Guest Name:");
+        JTextField guestNameField = new JTextField(25);
+
         JLabel selectedHotel = new JLabel("Select Hotel:");
         JTextField selectedHotelField = new JTextField(25);
 
         JLabel checkIn = new JLabel("Check In:");
-        JTextField checkInField = new JTextField(25);
+        JTextField checkInField = new JTextField(2);
 
         JLabel checkOut = new JLabel("Check Out:");
-        JTextField checkOutField = new JTextField(25);
+        JTextField checkOutField = new JTextField(2);
 
         JLabel roomNumber = new JLabel("Room Number:");
-        JTextField roomNumberField = new JTextField(25);
+        JTextField roomNumberField = new JTextField(2);
 
         addReservationButton = new JButton("Add Reservation");
 
+        centerPanel.add(guestName);
+        centerPanel.add(guestNameField);
         centerPanel.add(selectedHotel);
         centerPanel.add(selectedHotelField);
         centerPanel.add(checkIn);
@@ -203,6 +416,7 @@ public class MainView extends JFrame {
         centerPanel.revalidate();
         centerPanel.repaint();
     }
+
 
     
 
@@ -234,6 +448,10 @@ public class MainView extends JFrame {
         viewHotelButton.addActionListener(listener);
     }
 
+    public void setViewHotelDetailsButtonListener(ActionListener listener) {
+        viewHotelDetailsButton.addActionListener(listener);
+    }
+
     public void setViewSpecificRoomButtonListener(ActionListener listener) {
         viewSpecificRoom.addActionListener(listener);
     }
@@ -242,9 +460,6 @@ public class MainView extends JFrame {
         searchButton.addActionListener(listener);
     }
 
-    public void setViewHotelDetailsButtonListener(ActionListener listener) {
-        viewSpecificRoom.addActionListener(listener);
-    }
 
     public void setViewReservationButtonListener(ActionListener listener) {
         viewReservation.addActionListener(listener);

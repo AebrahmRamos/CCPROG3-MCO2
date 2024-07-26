@@ -63,51 +63,62 @@ public class MainController {
     public void viewHotel() {
         view.setViewHotelDetailsButtonListener(e -> {
             // Logic for viewing hotel details
+            view.showHotelOverviewForm();
             
         });
 
         view.setViewSpecificRoomButtonListener(e -> {
             // Logic for viewing specific room details
+            view.showRoomOverviewForm();
         });
 
         view.setViewReservationButtonListener(e -> {
             // Logic for viewing reservations
+            view.showReservationsForm();
         });
 
         view.setViewNumberOfBookedandAvailableRoomsButtonListener(e -> {
             // Logic for viewing booked and available rooms
+            view.showAvailableRooms();
         });
     }
 
     public void manageHotel() {
         view.setChangeNameButtonListener(e -> {
             // Logic for changing hotel name
+            view.showChangeHotelName();
         });
 
         view.setAddRoomButtonListener(e -> {
             // Logic for adding room
+            view.showAddRoomForm();
         });
 
         view.setRemoveRoomButtonListener(e -> {
             // Logic for removing room
+            view.showRemoveRoomForm();
         });
 
         view.setChangePriceButtonListener(e -> {
             // Logic for changing room price
+            view.showChangePriceForm();
         });
 
         view.setRemoveReservationButtonListener(e -> {
             // Logic for removing reservation
+            view.showRemoveReservationForm();
         });
 
         view.setRemoveHotelButtonListener(e -> {
             // Logic for removing hotel
+            view.showRemoveHotelForm();
         });
     }
 
     public void simulateBooking() {
         view.setAddReservationButtonListener(e -> {
             // Logic for adding reservation
+            view.showSimulateBooking();
         });
     }
 
