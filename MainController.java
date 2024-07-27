@@ -93,8 +93,6 @@ public class MainController {
                 }
             }
             JOptionPane.showMessageDialog(view, "Hotel not found.");
-
-
         });
     }
 
