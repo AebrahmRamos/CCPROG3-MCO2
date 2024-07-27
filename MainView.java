@@ -27,6 +27,13 @@ public class MainView extends JFrame {
     private JButton removeHotel;   
     private JButton addReservationButton;
     private JButton viewHotelDetailsButton;
+    private JTextField roomNumberField; 
+    private JTextField newHotelNameField;
+    private JTextField newRoomType;
+    private JButton searchRoomButton;
+    private JTextField newPriceField;
+
+
 
     public MainView() {
         // Set up the frame
@@ -172,14 +179,15 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Search Hotel:");
         hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
-        JTextField roomNumberField = new JTextField(25);
-        searchButton = new JButton("Search");
+        roomNumberField = new JTextField(25);
+        searchRoomButton = new JButton("Search");
+
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
         centerPanel.add(roomNumber);
         centerPanel.add(roomNumberField);
-        centerPanel.add(searchButton);
+        centerPanel.add(searchRoomButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -233,7 +241,7 @@ public class MainView extends JFrame {
     public void showManageHotel() {
         centerPanel.removeAll();
         centerPanel.setLayout(new GridLayout(6, 2, 10, 10));
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         changeNameButton = new JButton("Change Hotel Name");
         addRoomButton = new JButton("Add Room");
@@ -247,6 +255,7 @@ public class MainView extends JFrame {
         centerPanel.add(removeRoomButton);
         centerPanel.add(changePriceButton);
         centerPanel.add(removeReservationButton);
+        centerPanel.add(removeHotel);
 
 
         centerPanel.revalidate();
@@ -261,8 +270,8 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
         JLabel newHotelName = new JLabel("New Hotel Name:");
-        JTextField newHotelNameField = new JTextField(25);
-        JButton changeNameButton = new JButton("Change Name");
+        newHotelNameField = new JTextField(25);
+        changeNameButton = new JButton("Change Name");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
@@ -282,13 +291,17 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
         JLabel numRooms = new JLabel("Number of Rooms:");
-        JTextField numRoomsField = new JTextField(25);
-        JButton addRoomButton = new JButton("Add Room");
+        numRoomsField = new JTextField(25);
+        JLabel roomType = new JLabel("Room Type:");
+        newRoomType = new JTextField(25);
+        addRoomButton = new JButton("Add Room");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
         centerPanel.add(numRooms);
         centerPanel.add(numRoomsField);
+        centerPanel.add(roomType);
+        centerPanel.add(newRoomType);
         centerPanel.add(addRoomButton);
 
         centerPanel.revalidate();
@@ -303,8 +316,8 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
-        JTextField roomNumberField = new JTextField(25);
-        JButton removeRoomButton = new JButton("Remove Room");
+        roomNumberField = new JTextField(25);
+        removeRoomButton = new JButton("Remove Room");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
@@ -324,10 +337,10 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
         JLabel roomNumber = new JLabel("Room Number:");
-        JTextField roomNumberField = new JTextField(25);
+        roomNumberField = new JTextField(25);
         JLabel newPrice = new JLabel("New Price:");
-        JTextField newPriceField = new JTextField(25);
-        JButton changePriceButton = new JButton("Change Price");
+        newPriceField = new JTextField(25);
+        changePriceButton = new JButton("Change Price");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
@@ -369,7 +382,7 @@ public class MainView extends JFrame {
 
         JLabel hotelName = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
-        JButton removeHotel = new JButton("Remove Hotel");
+        removeHotel = new JButton("Remove Hotel");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
@@ -448,8 +461,40 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    public void displayRoomInformation(int roomNumber, String roomType, double price, boolean availability) {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new BorderLayout());
     
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
+    
+        JLabel roomNumberLabel = new JLabel("Room Number: " + roomNumber);
+        roomNumberLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        roomNumberLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
+        JLabel roomTypeLabel = new JLabel("Room Type: " + roomType);
+        roomTypeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        roomTypeLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel priceLabel = new JLabel("Price: " + price);
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel availabilityLabel = new JLabel("Availability: " + (availability ? "Available" : "Not Available"));
+        availabilityLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        availabilityLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        infoPanel.add(roomNumberLabel);
+        infoPanel.add(roomTypeLabel);
+        infoPanel.add(priceLabel);
+        infoPanel.add(availabilityLabel);
+    
+        centerPanel.add(infoPanel, BorderLayout.CENTER);
+    
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
     
 
     public void display(String text) {
@@ -464,6 +509,10 @@ public class MainView extends JFrame {
 
         centerPanel.revalidate();
         centerPanel.repaint();
+    }
+
+    public void setSearchRoomButtonListener(ActionListener listener) {
+        searchRoomButton.addActionListener(listener);
     }
 
     public void setAddHotelButtonListener(ActionListener listener) {
@@ -540,6 +589,7 @@ public class MainView extends JFrame {
         exitButton.addActionListener(listener);
     }
 
+
     
 
 
@@ -553,5 +603,22 @@ public class MainView extends JFrame {
 
     public String getNumRooms() {
         return numRoomsField.getText();
+    }
+
+    public int getRoomNumber() {
+        String roomNumberText;
+        int roomNumberInteger;
+        roomNumberText = roomNumberField.getText();
+        roomNumberInteger = Integer.parseInt(roomNumberText);
+
+        return roomNumberInteger;
+    }
+
+    public String getNewHotelName() {
+        return newHotelNameField.getText();
+    }
+
+    public String getNewRoomType() {
+        return newRoomType.getText();
     }
 }

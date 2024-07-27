@@ -69,6 +69,7 @@ public class MainController {
         view.setViewSpecificRoomButtonListener(e -> {
             // Logic for viewing specific room details
             view.showRoomOverviewForm();
+            viewSpecificRoom();
         });
 
         view.setViewReservationButtonListener(e -> {
@@ -96,20 +97,48 @@ public class MainController {
         });
     }
 
+    public void viewSpecificRoom() {
+        view.setSearchRoomButtonListener(e -> {
+            //view the room number, room type, price, and availability of a selected room
+            String hotelName = view.getHotelName();
+            int roomNumber = view.getRoomNumber();
+            try {
+                for (Hotel hotel : hotels) {
+                    if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                        for (Room room : hotel.getRooms()) {
+                            if (room.getRoomNumber() == roomNumber) {
+                                view.displayRoomInformation(room.getRoomNumber(), room.getRoomType(), room.getPrice(), room.isAvailable(roomNumber));
+                                return;
+                            }
+                        }
+                        JOptionPane.showMessageDialog(view, "Room not found.");
+                        return;
+                    }
+                }
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(view, "Room number must be a valid integer.");
+            }
+        });
+    }
+
     public void manageHotel() {
         view.setChangeNameButtonListener(e -> {
             // Logic for changing hotel name
             view.showChangeHotelName();
+            changeHotelName();
         });
 
         view.setAddRoomButtonListener(e -> {
             // Logic for adding room
             view.showAddRoomForm();
+            addRoom();
         });
 
         view.setRemoveRoomButtonListener(e -> {
             // Logic for removing room
             view.showRemoveRoomForm();
+            removeRoom();
         });
 
         view.setChangePriceButtonListener(e -> {
@@ -125,6 +154,90 @@ public class MainController {
         view.setRemoveHotelButtonListener(e -> {
             // Logic for removing hotel
             view.showRemoveHotelForm();
+            removeHotel();
+        });
+    }
+
+    public void changeHotelName() {
+        view.setChangeNameButtonListener(e -> {
+            // Logic for changing hotel name
+            String hotelName = view.getHotelName();
+            String newHotelName = view.getNewHotelName();
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equalsIgnoreCase(hotelName) && !isHotelNameDuplicated(newHotelName)) {
+                    hotel.setName(newHotelName);
+                    JOptionPane.showMessageDialog(view, "Hotel name changed successfully.");
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(view, "Invalid Hotel Name.");
+        });
+    }
+
+    public void addRoom() {
+        //allows the user to add a room to a selected hotel given the number of rooms and type
+        view.setAddRoomButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            String numRoomsText = view.getNumRooms();
+            String roomType = view.getNewRoomType();
+            try {
+            int numRooms = Integer.parseInt(numRoomsText);
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                    int originalNumRooms = hotel.getRooms().size();
+                    for (int i = 0; i < numRooms; i++) {
+                        hotel.addRoom(roomType);
+                    }
+                    int newNumRooms = hotel.getRooms().size();
+                    if (newNumRooms - originalNumRooms == numRooms) {
+                        JOptionPane.showMessageDialog(view, "Room added successfully.");
+                    } else {
+                        JOptionPane.showMessageDialog(view, "Failed to add room.");
+                    }
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+            } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(view, "Number of rooms must be a valid integer.");
+            }
+        });
+    }
+
+    public void removeRoom() {
+        //allows the user to remove a room from a selected hotel given the room number
+        view.setRemoveRoomButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            int roomNumber = view.getRoomNumber();
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                    for (Room room : hotel.getRooms()) {
+                        if (room.getRoomNumber() == roomNumber) {
+                            hotel.getRooms().remove(room);
+                            JOptionPane.showMessageDialog(view, "Room removed successfully.");
+                            return;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(view, "Room not found.");
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+        });
+    }
+
+    public void removeHotel() {
+        //allows the user to remove a hotel given the hotel name
+        view.setRemoveHotelButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                    hotels.remove(hotel);
+                    JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
         });
     }
 
