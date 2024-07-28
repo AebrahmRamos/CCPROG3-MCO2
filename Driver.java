@@ -6,7 +6,7 @@ import java.util.ResourceBundle.Control;
 public class Driver {
     public static void main(String[] args) {
         // ManagementSystem managementSystem = new ManagementSystem();
-        ManagementModel managementModel = new ManagementModel();
+        HotelModel managementModel = new HotelModel();
         //managementSystem.menuSystem();
         MainView mainView = new MainView();
         MainController mainController = new MainController(mainView, managementModel);

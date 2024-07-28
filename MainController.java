@@ -1,14 +1,19 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JOptionPane;
 
+
+// Controller Class
 public class MainController {
-    private ManagementModel model;
-    private ArrayList<Hotel> hotels = new ArrayList<>();
+    private HotelModel model;
     private MainView view;
 
-    public MainController(MainView view, ManagementModel model) {
-        this.view = view;
+    public MainController(MainView view, HotelModel model) {
         this.model = model;
+        this.view = view;
         init();
     }
 
@@ -31,9 +36,18 @@ public class MainController {
         });
 
         view.setSimulateBookingButtonListener(e -> {
-            view.showSimulateBooking();
+            showReservationForm();
             simulateBooking();
         });
+    }
+
+    private void showReservationForm() {
+        ArrayList<String> hotelNames = new ArrayList<>();
+        for (Hotel hotel : model.getHotels()) {
+            hotelNames.add(hotel.getName());
+        }
+        view.showSimulateBooking(hotelNames);
+        view.setAddReservationButtonListener(e -> addReservation(model.getHotels()));
     }
 
     public void addHotel() {
@@ -42,8 +56,8 @@ public class MainController {
             String numRoomsText = view.getNumRooms();
             try {
                 int numRooms = Integer.parseInt(numRoomsText);
-                if (!hotelName.trim().isEmpty() && numRooms > 1 && numRooms <= 50 && !isHotelNameDuplicated(hotelName)) {
-                    hotels.add(new Hotel(hotelName, numRooms));
+                if (!hotelName.trim().isEmpty() && numRooms > 1 && numRooms <= 50 && !model.isHotelNameDuplicated(hotelName)) {
+                    model.addHotel(new Hotel(hotelName, numRooms));
                     view.displayDefaultCenterPanel();
                 } else {
                     JOptionPane.showMessageDialog(view, "Please enter a valid hotel name and number of rooms.");
@@ -54,105 +68,106 @@ public class MainController {
         });
     }
 
-    private boolean isHotelNameDuplicated(String hotelName) {
-        return hotels.stream().anyMatch(hotel -> hotel.getName().equalsIgnoreCase(hotelName));
-    }
-
     public void viewHotel() {
         view.setViewHotelDetailsButtonListener(e -> {
-            // Logic for viewing hotel details
             view.showHotelOverviewForm();
             viewHotelInformation();
-                       
         });
 
         view.setViewSpecificRoomButtonListener(e -> {
-            // Logic for viewing specific room details
             view.showRoomOverviewForm();
             viewSpecificRoom();
         });
 
         view.setViewReservationButtonListener(e -> {
-            // Logic for viewing reservations
             view.showReservationsForm();
+            showReservations();
         });
 
         view.setViewNumberOfBookedandAvailableRoomsButtonListener(e -> {
-            // Logic for viewing booked and available rooms
             view.showAvailableRooms();
         });
     }
 
     public void viewHotelInformation() {
         view.setSearchHotelButtonListener(e -> {
-            //view the hotel name, number of rooms, and earnings per month of a selected hotel
             String hotelName = view.getHotelName();
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equalsIgnoreCase(hotelName)) {
-                    view.displayHotelInformation(hotel.getName(), hotel.getRooms().size(), hotel.getEarningsPerMonth());
-                    return;
-                }
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                view.displayHotelInformation(hotel.getName(), hotel.getRooms().size(), hotel.getEarningsPerMonth());
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
         });
     }
 
     public void viewSpecificRoom() {
         view.setSearchRoomButtonListener(e -> {
-            //view the room number, room type, price, and availability of a selected room
             String hotelName = view.getHotelName();
             int roomNumber = view.getRoomNumber();
-            try {
-                for (Hotel hotel : hotels) {
-                    if (hotel.getName().equalsIgnoreCase(hotelName)) {
-                        for (Room room : hotel.getRooms()) {
-                            if (room.getRoomNumber() == roomNumber) {
-                                view.displayRoomInformation(room.getRoomNumber(), room.getRoomType(), room.getPrice(), room.isAvailable(roomNumber));
-                                return;
-                            }
-                        }
-                        JOptionPane.showMessageDialog(view, "Room not found.");
-                        return;
-                    }
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
+                if (room != null) {
+                    view.displayRoomInformation(room.getRoomNumber(), room.getRoomType(), room.getPrice(), room.isAvailable(roomNumber));
+                } else {
+                    JOptionPane.showMessageDialog(view, "Room not found.");
                 }
+            } else {
                 JOptionPane.showMessageDialog(view, "Hotel not found.");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(view, "Room number must be a valid integer.");
+            }
+        });
+    }
+
+    public void showReservations() {
+        //show the reservations of a guest in a hotel displaying the room number, check-in and check-out dates, and the total price of the reservation
+        view.setSearchReservationButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            String guestName = view.getCustomerName();
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+            boolean reservationFound = false;
+            for (Reservation reservation : hotel.getReservations()) {
+                if (reservation.getGuestName().equalsIgnoreCase(guestName)) {
+                view.displayReservationInformation(reservation.getRoomNumber(), reservation.getGuestName() ,reservation.getCheckIn(), reservation.getCheckOut(), reservation.getTotal());
+                reservationFound = true;
+                }
+            }
+            if (!reservationFound) {
+                JOptionPane.showMessageDialog(view, "No reservations found for the guest.");
+            }
+            } else {
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
         });
     }
 
     public void manageHotel() {
         view.setChangeNameButtonListener(e -> {
-            // Logic for changing hotel name
             view.showChangeHotelName();
             changeHotelName();
         });
 
         view.setAddRoomButtonListener(e -> {
-            // Logic for adding room
             view.showAddRoomForm();
             addRoom();
         });
 
         view.setRemoveRoomButtonListener(e -> {
-            // Logic for removing room
             view.showRemoveRoomForm();
             removeRoom();
         });
 
         view.setChangePriceButtonListener(e -> {
-            // Logic for changing room price
             view.showChangePriceForm();
+            changePrice();
         });
 
         view.setRemoveReservationButtonListener(e -> {
-            // Logic for removing reservation
             view.showRemoveReservationForm();
         });
 
         view.setRemoveHotelButtonListener(e -> {
-            // Logic for removing hotel
             view.showRemoveHotelForm();
             removeHotel();
         });
@@ -160,30 +175,27 @@ public class MainController {
 
     public void changeHotelName() {
         view.setChangeNameButtonListener(e -> {
-            // Logic for changing hotel name
             String hotelName = view.getHotelName();
             String newHotelName = view.getNewHotelName();
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equalsIgnoreCase(hotelName) && !isHotelNameDuplicated(newHotelName)) {
-                    hotel.setName(newHotelName);
-                    JOptionPane.showMessageDialog(view, "Hotel name changed successfully.");
-                    return;
-                }
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null && !model.isHotelNameDuplicated(newHotelName)) {
+                hotel.setName(newHotelName);
+                JOptionPane.showMessageDialog(view, "Hotel name changed successfully.");
+            } else {
+                JOptionPane.showMessageDialog(view, "Invalid Hotel Name.");
             }
-            JOptionPane.showMessageDialog(view, "Invalid Hotel Name.");
         });
     }
 
     public void addRoom() {
-        //allows the user to add a room to a selected hotel given the number of rooms and type
         view.setAddRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
             String numRoomsText = view.getNumRooms();
             String roomType = view.getNewRoomType();
             try {
-            int numRooms = Integer.parseInt(numRoomsText);
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equalsIgnoreCase(hotelName)) {
+                int numRooms = Integer.parseInt(numRoomsText);
+                Hotel hotel = model.findHotelByName(hotelName);
+                if (hotel != null) {
                     int originalNumRooms = hotel.getRooms().size();
                     for (int i = 0; i < numRooms; i++) {
                         hotel.addRoom(roomType);
@@ -194,57 +206,118 @@ public class MainController {
                     } else {
                         JOptionPane.showMessageDialog(view, "Failed to add room.");
                     }
-                    return;
+                } else {
+                    JOptionPane.showMessageDialog(view, "Hotel not found.");
                 }
-            }
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
             } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(view, "Number of rooms must be a valid integer.");
+                JOptionPane.showMessageDialog(view, "Number of rooms must be a valid integer.");
             }
         });
     }
 
     public void removeRoom() {
-        //allows the user to remove a room from a selected hotel given the room number
         view.setRemoveRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
             int roomNumber = view.getRoomNumber();
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equalsIgnoreCase(hotelName)) {
-                    for (Room room : hotel.getRooms()) {
-                        if (room.getRoomNumber() == roomNumber) {
-                            hotel.getRooms().remove(room);
-                            JOptionPane.showMessageDialog(view, "Room removed successfully.");
-                            return;
-                        }
-                    }
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
+                if (room != null) {
+                    hotel.getRooms().remove(room);
+                    JOptionPane.showMessageDialog(view, "Room removed successfully.");
+                } else {
                     JOptionPane.showMessageDialog(view, "Room not found.");
-                    return;
                 }
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
         });
     }
 
     public void removeHotel() {
-        //allows the user to remove a hotel given the hotel name
         view.setRemoveHotelButtonListener(e -> {
             String hotelName = view.getHotelName();
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equalsIgnoreCase(hotelName)) {
-                    hotels.remove(hotel);
-                    JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
-                    return;
-                }
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                model.removeHotel(hotel);
+                JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
+        });
+    }
+
+    public void changePrice() {
+        view.setChangePriceButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            int roomNumber = view.getRoomNumber();
+            String newPriceText = view.getNewPrice();
+            try {
+                double newPrice = Double.parseDouble(newPriceText);
+                Hotel hotel = model.findHotelByName(hotelName);
+                if (hotel != null) {
+                    Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
+                    if (room != null) {
+                        room.setPrice(newPrice);
+                        JOptionPane.showMessageDialog(view, "Price changed successfully.");
+                    } else {
+                        JOptionPane.showMessageDialog(view, "Room not found.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(view, "Hotel not found.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(view, "Price must be a valid number.");
+            }
         });
     }
 
     public void simulateBooking() {
-        view.setAddReservationButtonListener(e -> {
-            // Logic for adding reservation
-            view.showSimulateBooking();
-        });
+
+    }
+
+    public void addReservation(ArrayList<Hotel> hotels) {
+        if (!hotels.isEmpty()) {
+            String guestName = view.getCustomerName();
+            int checkIn = view.getCheckIn();
+            int checkOut = view.getCheckOut();
+
+            if (checkIn >= checkOut) {
+                view.showMessage("Invalid dates. Please enter valid dates.");
+                return;
+            }
+
+            String hotelName = view.getSelectedHotel();
+            if (hotelName == null) {
+                view.showMessage("Please select a hotel.");
+                return;
+            }
+
+            String roomType = view.getRoomType();
+            int roomNumber = view.getRoomNumber();
+            String discountCode = view.getDiscountCode();
+
+            for (Hotel hotel : hotels) {
+                if (hotel.getName().equals(hotelName)) {
+                    for (Room room : hotel.getRooms()) {
+                        if (room.getRoomNumber() == roomNumber && (roomType.equals("All") || room.getRoomType().equals(roomType))) {
+                            room.addOccupiedRange(checkIn, checkOut);
+                            Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
+                            hotel.addReservation(reservation);
+                            view.showMessage("Reservation added for " + guestName + " at " + hotelName + ".");
+                            displayReservationInformation(roomNumber, guestName, checkIn, checkOut, reservation.getTotal());
+                            return;
+                        }
+                    }
+                }
+            }
+        } else {
+            view.showMessage("No hotels exist.");
+        }
+    }
+    
+    private void displayReservationInformation(int roomNumber, String guestName, int checkIn, int checkOut, double total) {
+        view.displayReservationInformation(roomNumber, guestName, checkIn, checkOut, total);
     }
 }
+

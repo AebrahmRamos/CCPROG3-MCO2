@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainView extends JFrame {
     private JButton addHotelButton;
@@ -32,6 +34,17 @@ public class MainView extends JFrame {
     private JTextField newRoomType;
     private JButton searchRoomButton;
     private JTextField newPriceField;
+    private JTextField guestNameField;
+    private JTextField selectedHotelField;
+    private JTextField checkInField;
+    private JTextField checkOutField;
+    private JButton showReservationButton;
+    private JTextField discountTextField;
+    private JComboBox<String> hotelComboBox;
+    private JComboBox<String> roomTypeComboBox;
+    private JComboBox<Integer> roomNumberComboBox;
+
+    private MainController controller;
 
 
 
@@ -197,17 +210,17 @@ public class MainView extends JFrame {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
 
-        searchButton = new JButton("Search");
+        showReservationButton = new JButton("Search");
         JLabel hotelName = new JLabel("Search Hotel:");
         hotelNameField = new JTextField(25);
         JLabel guestName = new JLabel("Guest Name:");
-        JTextField guestNameField = new JTextField(25);
+        guestNameField = new JTextField(25);
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
         centerPanel.add(guestName);
         centerPanel.add(guestNameField);
-        centerPanel.add(searchButton);
+        centerPanel.add(showReservationButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -392,46 +405,151 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
-    public void showSimulateBooking() {
+    public void showSimulateBooking(ArrayList<String> hotelNames) {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel guestName = new JLabel("Guest Name:");
-        JTextField guestNameField = new JTextField(25);
+        guestNameField = new JTextField(25);
 
         JLabel selectedHotel = new JLabel("Select Hotel:");
-        JTextField selectedHotelField = new JTextField(25);
+        hotelComboBox = new JComboBox<>(hotelNames.toArray(new String[0]));
 
         JLabel checkIn = new JLabel("Check In:");
-        JTextField checkInField = new JTextField(2);
+        checkInField = new JTextField(2);
 
         JLabel checkOut = new JLabel("Check Out:");
-        JTextField checkOutField = new JTextField(2);
+        checkOutField = new JTextField(2);
 
+        JLabel roomType = new JLabel("Room Type:");
+        String[] roomTypes = {"All", "Deluxe", "Executive", "Standard"};
+        roomTypeComboBox = new JComboBox<>(roomTypes);
+        
         JLabel roomNumber = new JLabel("Room Number:");
-        JTextField roomNumberField = new JTextField(2);
+        roomNumberField = new JTextField(2);
+
+        JLabel discountCode = new JLabel("Discount Code:");
+        discountTextField = new JTextField(25);
 
         addReservationButton = new JButton("Add Reservation");
 
         centerPanel.add(guestName);
         centerPanel.add(guestNameField);
         centerPanel.add(selectedHotel);
-        centerPanel.add(selectedHotelField);
+        centerPanel.add(hotelComboBox);
         centerPanel.add(checkIn);
         centerPanel.add(checkInField);
         centerPanel.add(checkOut);
         centerPanel.add(checkOutField);
+        centerPanel.add(roomType);
+        centerPanel.add(roomTypeComboBox);
         centerPanel.add(roomNumber);
         centerPanel.add(roomNumberField);
+        centerPanel.add(discountCode);
+        centerPanel.add(discountTextField);
         centerPanel.add(addReservationButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
     }
 
+    public String getRoomType() {
+        return (String) roomTypeComboBox.getSelectedItem();
+    }
 
-    public void displayHotelInformation(String hotelName, int numRooms, double earnings) {
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    public String getDiscountCode() {
+        return discountTextField.getText();
+    }
+
+    public void setRoomNumbers(List<Integer> roomNumbers) {
+        roomNumberComboBox.removeAllItems();
+        for (int roomNumber : roomNumbers) {
+            roomNumberComboBox.addItem(roomNumber);
+        }
+    }
+
+
+    public void displayReservationInformation(int roomNumber, String guestName, int checkIn, int checkOut, double total) {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new BorderLayout());
+    
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
+    
+        JLabel guestNameLabel = new JLabel("Guest Name: " + guestName);
+        guestNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        guestNameLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel roomNumberLabel = new JLabel("Room Number: " + roomNumber);
+        roomNumberLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        roomNumberLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel checkInLabel = new JLabel("Check In: " + checkIn);
+        checkInLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        checkInLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel checkOutLabel = new JLabel("Check Out: " + checkOut);
+        checkOutLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        checkOutLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel totalLabel = new JLabel("Total Price: " + total);
+        totalLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        totalLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        infoPanel.add(guestNameLabel);
+        infoPanel.add(roomNumberLabel);
+        infoPanel.add(checkInLabel);
+        infoPanel.add(checkOutLabel);
+        infoPanel.add(totalLabel);
+    
+        centerPanel.add(infoPanel, BorderLayout.CENTER);
+    
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void displayRoomInformation(int roomNumber, String roomType, double price, boolean isAvailable) {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new BorderLayout());
+    
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
+    
+        JLabel roomNumberLabel = new JLabel("Room Number: " + roomNumber);
+        roomNumberLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        roomNumberLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel roomTypeLabel = new JLabel("Room Type: " + roomType);
+        roomTypeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        roomTypeLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel priceLabel = new JLabel("Price: " + price);
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        JLabel availabilityLabel = new JLabel("Availability: " + (isAvailable ? "Available" : "Not Available"));
+        availabilityLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        availabilityLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    
+        infoPanel.add(roomNumberLabel);
+        infoPanel.add(roomTypeLabel);
+        infoPanel.add(priceLabel);
+        infoPanel.add(availabilityLabel);
+    
+        centerPanel.add(infoPanel, BorderLayout.CENTER);
+    
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void displayHotelInformation(String hotelName, int numRooms, double earningsPerMonth) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());
     
@@ -447,13 +565,15 @@ public class MainView extends JFrame {
         numRoomsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         numRoomsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
     
-        JLabel earningsLabel = new JLabel("Earnings per Month: " + earnings);
-        earningsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        earningsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        JLabel earningsPerMonthLabel = new JLabel("Earnings Per Month: " + earningsPerMonth);
+        earningsPerMonthLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        earningsPerMonthLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
     
         infoPanel.add(hotelNameLabel);
         infoPanel.add(numRoomsLabel);
-        infoPanel.add(earningsLabel);
+        infoPanel.add(earningsPerMonthLabel);
+
     
         centerPanel.add(infoPanel, BorderLayout.CENTER);
     
@@ -461,40 +581,7 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
-    public void displayRoomInformation(int roomNumber, String roomType, double price, boolean availability) {
-        centerPanel.removeAll();
-        centerPanel.setLayout(new BorderLayout());
     
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
-    
-        JLabel roomNumberLabel = new JLabel("Room Number: " + roomNumber);
-        roomNumberLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        roomNumberLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
-        JLabel roomTypeLabel = new JLabel("Room Type: " + roomType);
-        roomTypeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        roomTypeLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    
-        JLabel priceLabel = new JLabel("Price: " + price);
-        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        priceLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    
-        JLabel availabilityLabel = new JLabel("Availability: " + (availability ? "Available" : "Not Available"));
-        availabilityLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        availabilityLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    
-        infoPanel.add(roomNumberLabel);
-        infoPanel.add(roomTypeLabel);
-        infoPanel.add(priceLabel);
-        infoPanel.add(availabilityLabel);
-    
-        centerPanel.add(infoPanel, BorderLayout.CENTER);
-    
-        centerPanel.revalidate();
-        centerPanel.repaint();
-    }
     
 
     public void display(String text) {
@@ -525,6 +612,10 @@ public class MainView extends JFrame {
 
     public void setViewHotelButtonListener(ActionListener listener) {
         viewHotelButton.addActionListener(listener);
+    }
+
+    public void setSearchReservationButtonListener(ActionListener listener) {
+        showReservationButton.addActionListener(listener);
     }
 
     public void setViewHotelDetailsButtonListener(ActionListener listener) {
@@ -621,4 +712,52 @@ public class MainView extends JFrame {
     public String getNewRoomType() {
         return newRoomType.getText();
     }
+
+    public String getNewPrice() {
+        return newPriceField.getText();
+    }
+
+    public String getCustomerName() {
+        return guestNameField.getText();
+    }
+
+    public String getSelectedHotel() {
+        return selectedHotelField.getText();
+    }
+
+    public int getCheckIn() {
+        //turn the string into an integer
+        String checkInText;
+        int checkInInteger;
+        checkInText = checkInField.getText();
+        checkInInteger = Integer.parseInt(checkInText);
+
+        return checkInInteger;
+    }
+
+    public int getCheckOut() {
+        //turn the string into an integer
+        String checkOutText;
+        int checkOutInteger;
+        checkOutText = checkOutField.getText();
+        checkOutInteger = Integer.parseInt(checkOutText);
+
+        return checkOutInteger;
+    }
+
+    public void displayReservations(ArrayList<Reservation> reservations) {
+        String text = "";
+        for (Reservation reservation : reservations) {
+            text += "Guest Name: " + reservation.getGuestName() + "\n";
+            text += "Room Number: " + reservation.getRoomNumber() + "\n";
+            text += "Check In: " + reservation.getCheckIn() + "\n";
+            text += "Check Out: " + reservation.getCheckOut() + "\n";
+            text += "Total Price: " + reservation.getTotal() + "\n";
+            text += "\n";
+        }
+
+        display(text);
+    }
+
+
 }
