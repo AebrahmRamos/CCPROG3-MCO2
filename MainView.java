@@ -44,7 +44,6 @@ public class MainView extends JFrame {
     private JComboBox<String> roomTypeComboBox;
     private JComboBox<Integer> roomNumberComboBox;
 
-    private MainController controller;
 
 
 

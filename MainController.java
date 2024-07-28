@@ -1,7 +1,4 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
@@ -277,47 +274,8 @@ public class MainController {
     }
 
     public void addReservation(ArrayList<Hotel> hotels) {
-        if (!hotels.isEmpty()) {
-            String guestName = view.getCustomerName();
-            int checkIn = view.getCheckIn();
-            int checkOut = view.getCheckOut();
-
-            if (checkIn >= checkOut) {
-                view.showMessage("Invalid dates. Please enter valid dates.");
-                return;
-            }
-
-            String hotelName = view.getSelectedHotel();
-            if (hotelName == null) {
-                view.showMessage("Please select a hotel.");
-                return;
-            }
-
-            String roomType = view.getRoomType();
-            int roomNumber = view.getRoomNumber();
-            String discountCode = view.getDiscountCode();
-
-            for (Hotel hotel : hotels) {
-                if (hotel.getName().equals(hotelName)) {
-                    for (Room room : hotel.getRooms()) {
-                        if (room.getRoomNumber() == roomNumber && (roomType.equals("All") || room.getRoomType().equals(roomType))) {
-                            room.addOccupiedRange(checkIn, checkOut);
-                            Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
-                            hotel.addReservation(reservation);
-                            view.showMessage("Reservation added for " + guestName + " at " + hotelName + ".");
-                            displayReservationInformation(roomNumber, guestName, checkIn, checkOut, reservation.getTotal());
-                            return;
-                        }
-                    }
-                }
-            }
-        } else {
-            view.showMessage("No hotels exist.");
-        }
+        
     }
-    
-    private void displayReservationInformation(int roomNumber, String guestName, int checkIn, int checkOut, double total) {
-        view.displayReservationInformation(roomNumber, guestName, checkIn, checkOut, total);
-    }
+
 }
 
