@@ -34,18 +34,10 @@ public class MainController {
 
         view.setSimulateBookingButtonListener(e -> {
             showReservationForm();
-            simulateBooking();
         });
     }
 
-    private void showReservationForm() {
-        ArrayList<String> hotelNames = new ArrayList<>();
-        for (Hotel hotel : model.getHotels()) {
-            hotelNames.add(hotel.getName());
-        }
-        view.showSimulateBooking(hotelNames);
-        view.setAddReservationButtonListener(e -> addReservation(model.getHotels()));
-    }
+
 
     public void addHotel() {
         view.setSubmitButtonListener(e -> {
@@ -269,13 +261,20 @@ public class MainController {
         });
     }
 
-    public void simulateBooking() {
-
+    private void showReservationForm() {
+        ArrayList<String> hotelNames = new ArrayList<>();
+        for (Hotel hotel : model.getHotels()) {
+            hotelNames.add(hotel.getName());
+        }
+        view.showSimulateBooking(hotelNames);
+        view.setAddReservationButtonListener(e -> addReservation(model.getHotels()));
     }
 
-    public void addReservation(ArrayList<Hotel> hotels) {
+    private void addReservation(ArrayList<Hotel> hotels) {
         
     }
-
 }
+
+
+
 
