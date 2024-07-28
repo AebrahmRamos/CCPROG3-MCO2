@@ -406,7 +406,8 @@ public class MainView extends JFrame {
 
     public void showSimulateBooking(ArrayList<String> hotelNames) {
         centerPanel.removeAll();
-        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setLayout(new FlowLayout(1, 3, 10));
+        
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
         JLabel guestName = new JLabel("Guest Name:");
