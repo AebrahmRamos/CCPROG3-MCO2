@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ActionEvent;
 
 public class MainView extends JFrame {
     private JButton addHotelButton;
@@ -29,6 +30,7 @@ public class MainView extends JFrame {
     private JButton removeHotel;   
     private JButton addReservationButton;
     private JButton viewHotelDetailsButton;
+    private JButton getRoomNumberOnType;
     private JTextField roomNumberField; 
     private JTextField newHotelNameField;
     private JTextField newRoomType;
@@ -43,6 +45,7 @@ public class MainView extends JFrame {
     private JComboBox<String> hotelComboBox;
     private JComboBox<String> roomTypeComboBox;
     private JComboBox<Integer> roomNumberComboBox;
+    private JComboBox<Integer> roomNumberListComboBox;
 
 
 
@@ -404,32 +407,109 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
-    public void showSimulateBooking(ArrayList<String> hotelNames) {
+    public Integer[] getAvailableRoomNumber(HotelModel model) {
+        Hotel hotel = model.findHotelByName(hotelNameField.getText());
+        String roomType = roomTypeComboBox.getSelectedItem().toString().toLowerCase();
+        int checkIn = checkInField.getText() != null && !checkInField.getText().isEmpty() ? Integer.parseInt(checkInField.getText()) : 0;
+        int checkOut = checkOutField.getText() != null && !checkOutField.getText().isEmpty() ? Integer.parseInt(checkOutField.getText()) : 0;
+        Integer[] array = new Integer[50];
+        int i = 0;
+        // System.out.println("Start getAvailableRoomNumber");
+        // System.out.println("Hotel: " + hotel.getName());
+        // System.out.println("Room Type To Check " + roomType);
+        // System.out.println("Check In: " + checkIn);
+        // System.out.println("Check Out: " + checkOut);
+        for (Room room : hotel.getRooms()) {
+            // System.out.println("Room: " + room.getRoomNumber());
+            // System.out.println("Room Type: " + room.getRoomType() + " || Value: " + room.getRoomType().equals(roomType));
+            if (room.getRoomType().equals(roomType) || roomType.equals("all")) {
+                if (!roomOccupied(hotel, hotel.getName(), room.getRoomNumber(), checkIn, checkOut)) {
+                    System.out.println("Room " + room.getRoomNumber() + " available");
+                    array[i] = room.getRoomNumber();
+                    i++;
+                }
+            }
+        }
+        if (i > 0) {
+            Integer[] result = new Integer[i];
+            for (int j = 0; j < i; j++) {
+                if (array[j] != null && array[j] != 0) {
+                    result[j] = array[j];
+                }
+            }
+            return result;
+        }
+        
+    
+        System.out.println("Length: " + i);
+        // System.out.println("Result: ");
+        // for (int j = 0; j < i; j++) {
+        //     System.out.println(result[j]);
+        // }
+        return null;
+    }
+
+    public boolean roomOccupied(Hotel hotel, String hotelName, int roomNumber, int checkIn, int checkOut) {
+        System.out.println("Checking if room " + roomNumber + " is occupied for dates: " + checkIn + " to " + checkOut);
+        for (Room room : hotel.getRooms()) {
+            if (room.getRoomNumber() == roomNumber) {
+                for (Reservation reservation : room.getReservations()) {
+                    System.out.println("Checking reservation from " + reservation.getCheckIn() + " to " + reservation.getCheckOut());
+                    if (datesOverlap(reservation.getCheckIn(), reservation.getCheckOut(), checkIn, checkOut)) {
+                        System.out.println("Room is occupied.");
+                        return true;
+                    }
+                }
+            }
+        }
+        System.out.println("Room is available.");
+        return false;
+    }
+    
+    public boolean datesOverlap(int checkIn1, int checkOut1, int checkIn2, int checkOut2) {
+        boolean overlap = (checkIn1 < checkOut2 && checkOut1 > checkIn2);
+        System.out.println("Dates overlap: " + overlap);
+        return overlap;
+    }
+
+    public void showBooking(ArrayList<String> hotelNames, HotelModel model) {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout(1, 3, 10));
         
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
-        JLabel guestName = new JLabel("Guest Name:");
+        JLabel guestName = new JLabel("Guest Name: ");
         guestNameField = new JTextField(25);
 
-        JLabel selectedHotel = new JLabel("Select Hotel:");
+        JLabel selectedHotel = new JLabel("Select Hotel: ");
         hotelComboBox = new JComboBox<>(hotelNames.toArray(new String[0]));
 
-        JLabel checkIn = new JLabel("Check In:");
+        JLabel checkIn = new JLabel("Check In: ");
         checkInField = new JTextField(2);
 
-        JLabel checkOut = new JLabel("Check Out:");
+        JLabel checkOut = new JLabel("Check Out: ");
         checkOutField = new JTextField(2);
 
-        JLabel roomType = new JLabel("Room Type:");
+        JLabel roomType = new JLabel("Room Type: ");
         String[] roomTypes = {"All", "Deluxe", "Executive", "Standard"};
         roomTypeComboBox = new JComboBox<>(roomTypes);
         
-        JLabel roomNumber = new JLabel("Room Number:");
-        roomNumberField = new JTextField(2);
+        JButton getRoomNumberOnType = new JButton("Refresh");
 
-        JLabel discountCode = new JLabel("Discount Code:");
+        JLabel roomNumber = new JLabel("Room Number: ");
+        roomNumberListComboBox = new JComboBox<Integer>();
+
+        getRoomNumberOnType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer[] roomNumbers = getAvailableRoomNumber(model);
+                if (roomNumbers != null) {
+                    roomNumberListComboBox.setModel(new DefaultComboBoxModel<>(roomNumbers));
+                }
+        }});
+
+
+        JLabel discountCode = new JLabel("Discount Code: ");
         discountTextField = new JTextField(25);
 
         addReservationButton = new JButton("Add Reservation");
@@ -445,10 +525,11 @@ public class MainView extends JFrame {
         centerPanel.add(roomType);
         centerPanel.add(roomTypeComboBox);
         centerPanel.add(roomNumber);
-        centerPanel.add(roomNumberField);
+        centerPanel.add(roomNumberListComboBox);
         centerPanel.add(discountCode);
         centerPanel.add(discountTextField);
         centerPanel.add(addReservationButton);
+        centerPanel.add(getRoomNumberOnType);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -456,6 +537,10 @@ public class MainView extends JFrame {
 
     public String getRoomType() {
         return (String) roomTypeComboBox.getSelectedItem();
+    }
+
+    public int getSelectedRoomNumber() {
+        return (int) roomNumberListComboBox.getSelectedItem();
     }
 
     public void showMessage(String message) {
@@ -680,7 +765,9 @@ public class MainView extends JFrame {
         exitButton.addActionListener(listener);
     }
 
-
+    public void getRoomNumberOnTypeListener(ActionListener listener) {
+        getRoomNumberOnType.addActionListener(listener);
+    }
     
 
 
@@ -697,12 +784,13 @@ public class MainView extends JFrame {
     }
 
     public int getRoomNumber() {
-        String roomNumberText;
-        int roomNumberInteger;
-        roomNumberText = roomNumberField.getText();
-        roomNumberInteger = Integer.parseInt(roomNumberText);
+        // String roomNumberText;
+        // int roomNumberInteger;
+        // roomNumberText = roomNumberField.getText();
+        // roomNumberInteger = Integer.parseInt(roomNumberText);
 
-        return roomNumberInteger;
+        // return roomNumberInteger;
+        return (int) roomNumberListComboBox.getSelectedItem();
     }
 
     public String getNewHotelName() {
