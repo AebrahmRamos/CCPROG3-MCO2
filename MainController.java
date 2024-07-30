@@ -98,7 +98,7 @@ public class MainController {
     public void viewSpecificRoom() {
         view.setSearchRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
-            int roomNumber = view.getSelectedRoomNumber();
+            int roomNumber = view.getSelectedRoomNumberNonCombo();
             Hotel hotel = model.findHotelByName(hotelName);
             if (hotel != null) {
                 Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
@@ -230,7 +230,11 @@ public class MainController {
             String hotelName = view.getHotelName();
             String newHotelName = view.getNewHotelName();
             Hotel hotel = model.findHotelByName(hotelName);
+            int confirmation = yesNoOption("Are you sure you want to change the hotel name?", "Change Hotel Name");
             if (hotel != null && !model.isHotelNameDuplicated(newHotelName)) {
+                if(confirmation == JOptionPane.NO_OPTION) {
+                    return;
+                }
                 hotel.setName(newHotelName);
                 JOptionPane.showMessageDialog(view, "Hotel name changed successfully.");
             } else {
@@ -244,10 +248,14 @@ public class MainController {
             String hotelName = view.getHotelName();
             String numRoomsText = view.getNumRooms();
             String roomType = view.getNewRoomType();
+            int confirmation = yesNoOption("Are you sure you want to add a room?", "Add Room");
             try {
                 int numRooms = Integer.parseInt(numRoomsText);
                 Hotel hotel = model.findHotelByName(hotelName);
-                if (hotel != null) {
+                if (hotel != null && hotel.getRooms().size() + numRooms <= 50) {
+                    if(confirmation == JOptionPane.NO_OPTION) {
+                        return;
+                    }
                     int originalNumRooms = hotel.getRooms().size();
                     for (int i = 0; i < numRooms; i++) {
                         hotel.addRoom(roomType);
@@ -259,7 +267,7 @@ public class MainController {
                         JOptionPane.showMessageDialog(view, "Failed to add room.");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(view, "Hotel not found.");
+                    JOptionPane.showMessageDialog(view, "Invalid input.");
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(view, "Number of rooms must be a valid integer.");
@@ -270,11 +278,15 @@ public class MainController {
     public void removeRoom() {
         view.setRemoveRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
-            int roomNumber = view.getRoomNumber();
+            int roomNumber = view.getRoomNumberNonComboBox();
             Hotel hotel = model.findHotelByName(hotelName);
+            int confirmation = yesNoOption("Are you sure you want to remove the room?", "Remove Room");
             if (hotel != null) {
                 Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
-                if (room != null) {
+                if (room != null ) {
+                    if(confirmation == JOptionPane.NO_OPTION) {
+                        return;
+                    }
                     hotel.getRooms().remove(room);
                     JOptionPane.showMessageDialog(view, "Room removed successfully.");
                 } else {
@@ -290,7 +302,11 @@ public class MainController {
         view.setRemoveHotelButtonListener(e -> {
             String hotelName = view.getHotelName();
             Hotel hotel = model.findHotelByName(hotelName);
+            int confirmation = yesNoOption("Are you sure you want to remove the hotel?", "Remove Hotel");
             if (hotel != null) {
+                if(confirmation == JOptionPane.NO_OPTION) {
+                    return;
+                }
                 model.removeHotel(hotel);
                 JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
             } else {
@@ -302,14 +318,19 @@ public class MainController {
     public void changePrice() {
         view.setChangePriceButtonListener(e -> {
             String hotelName = view.getHotelName();
-            int roomNumber = view.getRoomNumber();
+            int roomNumber = view.getRoomNumberNonComboBox();
             String newPriceText = view.getNewPrice();
+            int confirmation = yesNoOption("Are you sure you want to change the price?", "Change Price");
             try {
                 double newPrice = Double.parseDouble(newPriceText);
                 Hotel hotel = model.findHotelByName(hotelName);
                 if (hotel != null) {
+                    
                     Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
                     if (room != null) {
+                        if(confirmation == JOptionPane.NO_OPTION) {
+                            return;
+                        }
                         room.setPrice(newPrice);
                         JOptionPane.showMessageDialog(view, "Price changed successfully.");
                     } else {
@@ -371,6 +392,11 @@ public class MainController {
         } else {
             JOptionPane.showMessageDialog(view, "Hotel not found.");
         }
+    }
+
+    public int yesNoOption(String message, String title) {
+        int confirmation = JOptionPane.showConfirmDialog(view, message, title, JOptionPane.YES_NO_OPTION);
+        return confirmation;
     }
 }
 

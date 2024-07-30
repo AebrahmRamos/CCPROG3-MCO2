@@ -1,5 +1,4 @@
 // import java.util.ResourceBundle.Control;
-
 /**
  * Driver class is the main entry point of the program
  */
