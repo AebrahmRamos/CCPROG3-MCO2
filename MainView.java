@@ -579,6 +579,10 @@ public class MainView extends JFrame {
         return (int) roomNumberListComboBox.getSelectedItem();
     }
 
+    public int getSelectedRoomNumberNonCombo() {
+        return Integer.parseInt(roomNumberField.getText());
+    }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
@@ -851,6 +855,15 @@ public class MainView extends JFrame {
 
         // return roomNumberInteger;
         return (int) roomNumberListComboBox.getSelectedItem();
+    }
+
+    public int getRoomNumberNonComboBox() {
+        String roomNumberText;
+        int roomNumberInteger;
+        roomNumberText = roomNumberField.getText();
+        roomNumberInteger = Integer.parseInt(roomNumberText);
+
+        return roomNumberInteger;
     }
 
     public String getNewHotelName() {
