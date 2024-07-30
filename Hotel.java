@@ -221,6 +221,13 @@ public class Hotel {
         }
     }
 
+    public void addModifiedDates(int start, int end, double rate){
+        for (int i = start; i <= end; i++) {
+            this.modifiedDates.put(i, rate);
+            System.out.println("Date " + i + " has been updated to " + rate);
+        }
+    }
+
     public Map<Integer, Double> getModifiedDates(){
         return modifiedDates;
     }

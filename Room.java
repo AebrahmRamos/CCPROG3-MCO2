@@ -66,6 +66,15 @@ public class Room {
         return true;
     }
 
+    public boolean isAvailable(int checkIn, int checkOut) {
+        for (Reservation reservation : reservations) {
+            if (checkIn < reservation.getCheckOut() && checkOut > reservation.getCheckIn()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Sets the price of the room
      * @param newPrice new Price to be assigned

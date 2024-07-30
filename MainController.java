@@ -39,6 +39,7 @@ public class MainController {
         view.setPrintHotelsButtonListener(e -> {
             view.printAllHotels(model);
         });
+
     }
 
 
@@ -168,13 +169,34 @@ public class MainController {
         });
 
         view.setDatePriceModifierButtonListener(e -> {
-            view.showDatePriceModifierForm();
-            datePriceModifier();
+            view.showDatePriceModifierForm(model);
+            showDatePriceModifier();
         });
     }
 
-    public void datePriceModifier() {
-        
+    public void showDatePriceModifier() {
+        view.setSubmitButtonListener(e -> {
+            String hotelName = view.getSelectedHotelName();
+            int startDate = view.getStartDate();
+            int endDate = view.getEndDate();
+            double rate = view.getRate();
+            System.out.println("rate: " + rate);
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (startDate < 1 || startDate > 31 || endDate < 1 || endDate > 31 || startDate > endDate) {
+                JOptionPane.showMessageDialog(view, "Invalid date range.");
+                return;
+            } else if (rate < 0) {
+                JOptionPane.showMessageDialog(view, "Rate must be a positive number.");
+                return;
+            }
+            // System.out.println("hello");
+            if (hotel != null) {
+                model.findHotelByName(hotelName).addModifiedDates(startDate, endDate, rate);
+                JOptionPane.showMessageDialog(view, "Date price modifier set successfully.");
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
+            }
+        });
     }
 
 
@@ -317,16 +339,31 @@ public class MainController {
         int roomNumber = view.getRoomNumber();
         int checkIn = view.getCheckIn();
         int checkOut = view.getCheckOut();
+        String discountCode = view.getDiscountCode();
+        
         Hotel hotel = hotels.stream().filter(h -> h.getName().equalsIgnoreCase(hotelName)).findFirst().orElse(null);
         if (hotel != null) {
             Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
             if (room != null) {
-                if (room.isAvailable(roomNumber)) {
+                if (room.isAvailable(checkIn, checkOut)) {
                     Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
+                    
+                    // Apply discount
+                    boolean discountApplied = reservation.applyDiscount(discountCode, hotel.getModifiedDates());
+                    
+                    // Update total price based on modified dates
+                    reservation.updateTotalPrice(hotel.getModifiedDates());
+                    
                     hotel.addReservation(reservation);
-                    JOptionPane.showMessageDialog(view, "Reservation added successfully.");
+                    room.addReservation(reservation);
+                    
+                    String message = "Reservation added successfully.";
+                    if (discountApplied) {
+                        message += " Discount applied.";
+                    }
+                    JOptionPane.showMessageDialog(view, message);
                 } else {
-                    JOptionPane.showMessageDialog(view, "Room is not available.");
+                    JOptionPane.showMessageDialog(view, "Room is not available for the selected dates.");
                 }
             } else {
                 JOptionPane.showMessageDialog(view, "Room not found.");

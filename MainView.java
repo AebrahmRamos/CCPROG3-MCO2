@@ -429,21 +429,35 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
-    public void showDatePriceModifierForm() {
+    public void showDatePriceModifierForm(HotelModel model) {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
 
+        ArrayList<String> hotelNames = new ArrayList<>();
+        for (Hotel hotel : model.getHotels()) {
+            hotelNames.add(hotel.getName());
+        }
         JLabel hotelName = new JLabel("Hotel Name:");
-        hotelNameField = new JTextField(25);
+        hotelComboBox = new JComboBox<>(hotelNames.toArray(new String[0]));
         JLabel startDateLabel = new JLabel("Start Date:");
-        startDate = new JTextField(25);
+        startDate = new JTextField(6);
         JLabel endDateLabel = new JLabel("End Date:");
-        endDate = new JTextField(25);
+        endDate = new JTextField(6);
+        JLabel rateLabel = new JLabel("Rate:");
+        rate = new JTextField(10);
+        
+        submitButton = new JButton("Modify Date Price");
 
         centerPanel.add(hotelName);
+        centerPanel.add(hotelComboBox);
         centerPanel.add(startDateLabel);
+        centerPanel.add(startDate);
         centerPanel.add(endDateLabel);
+        centerPanel.add(endDate);
+        centerPanel.add(rateLabel);
+        centerPanel.add(rate);
+        centerPanel.add(submitButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -571,6 +585,10 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    public String getSelectedHotelName() {
+        return (String) hotelComboBox.getSelectedItem();
+    }
+
     public String getRoomType() {
         return (String) roomTypeComboBox.getSelectedItem();
     }
@@ -585,6 +603,18 @@ public class MainView extends JFrame {
 
     public String getDiscountCode() {
         return discountTextField.getText();
+    }
+
+    public int getStartDate(){
+        return Integer.parseInt(startDate.getText());
+    }
+
+    public int getEndDate(){
+        return Integer.parseInt(endDate.getText());
+    }
+
+    public double getRate(){
+        return Double.parseDouble(rate.getText());
     }
 
     public void setRoomNumbers(List<Integer> roomNumbers) {
@@ -852,6 +882,7 @@ public class MainView extends JFrame {
         // return roomNumberInteger;
         return (int) roomNumberListComboBox.getSelectedItem();
     }
+
 
     public String getNewHotelName() {
         return newHotelNameField.getText();
