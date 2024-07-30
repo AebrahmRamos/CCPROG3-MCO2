@@ -35,6 +35,10 @@ public class MainController {
         view.setSimulateBookingButtonListener(e -> {
             showReservationForm(model);
         });
+
+        view.setPrintHotelsButtonListener(e -> {
+            view.printAllHotels(model);
+        });
     }
 
 
@@ -155,13 +159,49 @@ public class MainController {
 
         view.setRemoveReservationButtonListener(e -> {
             view.showRemoveReservationForm();
+            removeReservation();
         });
 
         view.setRemoveHotelButtonListener(e -> {
             view.showRemoveHotelForm();
             removeHotel();
         });
+
+        view.setDatePriceModifierButtonListener(e -> {
+            view.showDatePriceModifierForm();
+            datePriceModifier();
+        });
     }
+
+    public void datePriceModifier() {
+        
+    }
+
+
+    public void removeReservation() {
+        String hotelName = view.getHotelName();
+        String guestName = view.getCustomerName();
+    
+        Hotel hotel = model.findHotelByName(hotelName);
+        if (hotel != null) {
+            boolean reservationFound = false;
+            for (Reservation reservation : hotel.getReservations()) {
+                if (reservation.getGuestName().equalsIgnoreCase(guestName)) {
+                    hotel.removeReservation(reservation);
+                    reservationFound = true;
+                    JOptionPane.showMessageDialog(view, "Reservation removed successfully.");
+                    break;
+                }
+            }
+            if (!reservationFound) {
+                JOptionPane.showMessageDialog(view, "No reservations found for the guest.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+        }
+    }
+
+    
 
     public void changeHotelName() {
         view.setChangeNameButtonListener(e -> {
