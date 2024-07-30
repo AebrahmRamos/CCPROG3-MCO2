@@ -33,7 +33,7 @@ public class MainController {
         });
 
         view.setSimulateBookingButtonListener(e -> {
-            showReservationForm();
+            showReservationForm(model);
         });
     }
 
@@ -45,7 +45,7 @@ public class MainController {
             String numRoomsText = view.getNumRooms();
             try {
                 int numRooms = Integer.parseInt(numRoomsText);
-                if (!hotelName.trim().isEmpty() && numRooms > 1 && numRooms <= 50 && !model.isHotelNameDuplicated(hotelName)) {
+                if (!hotelName.trim().isEmpty() && numRooms >= 1 && numRooms <= 50 && !model.isHotelNameDuplicated(hotelName)) {
                     model.addHotel(new Hotel(hotelName, numRooms));
                     view.displayDefaultCenterPanel();
                 } else {
@@ -93,7 +93,7 @@ public class MainController {
     public void viewSpecificRoom() {
         view.setSearchRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
-            int roomNumber = view.getRoomNumber();
+            int roomNumber = view.getSelectedRoomNumber();
             Hotel hotel = model.findHotelByName(hotelName);
             if (hotel != null) {
                 Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
@@ -107,6 +107,7 @@ public class MainController {
             }
         });
     }
+
 
     public void showReservations() {
         //show the reservations of a guest in a hotel displaying the room number, check-in and check-out dates, and the total price of the reservation
@@ -261,17 +262,38 @@ public class MainController {
         });
     }
 
-    private void showReservationForm() {
+    private void showReservationForm(HotelModel model) {
         ArrayList<String> hotelNames = new ArrayList<>();
         for (Hotel hotel : model.getHotels()) {
             hotelNames.add(hotel.getName());
         }
-        view.showSimulateBooking(hotelNames);
+        view.showBooking(hotelNames, model);
         view.setAddReservationButtonListener(e -> addReservation(model.getHotels()));
     }
 
     private void addReservation(ArrayList<Hotel> hotels) {
-        
+        String hotelName = view.getHotelName();
+        String guestName = view.getCustomerName();
+        int roomNumber = view.getRoomNumber();
+        int checkIn = view.getCheckIn();
+        int checkOut = view.getCheckOut();
+        Hotel hotel = hotels.stream().filter(h -> h.getName().equalsIgnoreCase(hotelName)).findFirst().orElse(null);
+        if (hotel != null) {
+            Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
+            if (room != null) {
+                if (room.isAvailable(roomNumber)) {
+                    Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
+                    hotel.addReservation(reservation);
+                    JOptionPane.showMessageDialog(view, "Reservation added successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(view, "Room is not available.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(view, "Room not found.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+        }
     }
 }
 

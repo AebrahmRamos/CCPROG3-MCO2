@@ -224,4 +224,14 @@ public class Hotel {
     public Map<Integer, Double> getModifiedDates(){
         return modifiedDates;
     }
+
+    public List<Integer> getRoomNumberOnType(String type) {
+        List<Integer> roomNumbers = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.getRoomType().equals(type)) {
+                roomNumbers.add(room.getRoomNumber());
+            }
+        }
+        return roomNumbers;
+    }
 }
