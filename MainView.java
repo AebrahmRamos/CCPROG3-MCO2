@@ -28,6 +28,7 @@ public class MainView extends JFrame {
     private JButton changePriceButton;
     private JButton removeReservationButton;
     private JButton removeHotel;   
+    private JButton datePriceModifier;
     private JButton addReservationButton;
     private JButton viewHotelDetailsButton;
     private JButton getRoomNumberOnType;
@@ -35,6 +36,9 @@ public class MainView extends JFrame {
     private JTextField newHotelNameField;
     private JTextField newRoomType;
     private JButton searchRoomButton;
+    private JTextField startDate;
+    private JTextField endDate;
+    private JTextField rate;
     private JTextField newPriceField;
     private JTextField guestNameField;
     private JTextField selectedHotelField;
@@ -152,6 +156,8 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    
+
     public void showViewHotelOptions() {
         centerPanel.removeAll();
         centerPanel.setLayout(new GridLayout(4, 1, 10, 10));
@@ -228,6 +234,19 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    public void showHotels() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+
+        centerPanel.add(new JScrollPane(displayArea));
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
     public void showAvailableRooms() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -264,6 +283,7 @@ public class MainView extends JFrame {
         changePriceButton = new JButton("Change Room Price");
         removeReservationButton = new JButton("Remove Reservation");
         removeHotel = new JButton("Remove Hotel");
+        datePriceModifier = new JButton("Modify Date Price");
 
         centerPanel.add(changeNameButton);
         centerPanel.add(addRoomButton);
@@ -271,6 +291,7 @@ public class MainView extends JFrame {
         centerPanel.add(changePriceButton);
         centerPanel.add(removeReservationButton);
         centerPanel.add(removeHotel);
+        centerPanel.add(datePriceModifier);
 
 
         centerPanel.revalidate();
@@ -344,6 +365,7 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+
     public void showChangePriceForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -373,19 +395,19 @@ public class MainView extends JFrame {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
-
-        JLabel hotelName = new JLabel("Hotel Name:");
+    
+        JLabel hotelNameLabel = new JLabel("Hotel Name:");
         hotelNameField = new JTextField(25);
-        JLabel guestName = new JLabel("Guest Name:");
-        JTextField guestNameField = new JTextField(25);
-        JButton removeReservationButton = new JButton("Remove Reservation");
-
-        centerPanel.add(hotelName);
+        JLabel guestNameLabel = new JLabel("Guest Name:");
+        guestNameField = new JTextField(25);
+        removeReservationButton = new JButton("Remove Reservation");
+    
+        centerPanel.add(hotelNameLabel);
         centerPanel.add(hotelNameField);
-        centerPanel.add(guestName);
+        centerPanel.add(guestNameLabel);
         centerPanel.add(guestNameField);
         centerPanel.add(removeReservationButton);
-
+    
         centerPanel.revalidate();
         centerPanel.repaint();
     }
@@ -402,6 +424,26 @@ public class MainView extends JFrame {
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
         centerPanel.add(removeHotel);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void showDatePriceModifierForm() {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
+
+        JLabel hotelName = new JLabel("Hotel Name:");
+        hotelNameField = new JTextField(25);
+        JLabel startDateLabel = new JLabel("Start Date:");
+        startDate = new JTextField(25);
+        JLabel endDateLabel = new JLabel("End Date:");
+        endDate = new JTextField(25);
+
+        centerPanel.add(hotelName);
+        centerPanel.add(startDateLabel);
+        centerPanel.add(endDateLabel);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -449,27 +491,21 @@ public class MainView extends JFrame {
         return null;
     }
 
+    public boolean datesOverlap(int checkIn1, int checkOut1, int checkIn2, int checkOut2) {
+        return (checkIn1 < checkOut2 && checkOut1 > checkIn2);
+    }
+
     public boolean roomOccupied(Hotel hotel, String hotelName, int roomNumber, int checkIn, int checkOut) {
-        System.out.println("Checking if room " + roomNumber + " is occupied for dates: " + checkIn + " to " + checkOut);
         for (Room room : hotel.getRooms()) {
             if (room.getRoomNumber() == roomNumber) {
                 for (Reservation reservation : room.getReservations()) {
-                    System.out.println("Checking reservation from " + reservation.getCheckIn() + " to " + reservation.getCheckOut());
                     if (datesOverlap(reservation.getCheckIn(), reservation.getCheckOut(), checkIn, checkOut)) {
-                        System.out.println("Room is occupied.");
                         return true;
                     }
                 }
             }
         }
-        System.out.println("Room is available.");
         return false;
-    }
-    
-    public boolean datesOverlap(int checkIn1, int checkOut1, int checkIn2, int checkOut2) {
-        boolean overlap = (checkIn1 < checkOut2 && checkOut1 > checkIn2);
-        System.out.println("Dates overlap: " + overlap);
-        return overlap;
     }
 
     public void showBooking(ArrayList<String> hotelNames, HotelModel model) {
@@ -494,7 +530,7 @@ public class MainView extends JFrame {
         String[] roomTypes = {"All", "Deluxe", "Executive", "Standard"};
         roomTypeComboBox = new JComboBox<>(roomTypes);
         
-        JButton getRoomNumberOnType = new JButton("Refresh");
+        JButton getRoomNumberOnType = new JButton("Get Available Room Numbers");
 
         JLabel roomNumber = new JLabel("Room Number: ");
         roomNumberListComboBox = new JComboBox<Integer>();
@@ -526,10 +562,10 @@ public class MainView extends JFrame {
         centerPanel.add(roomTypeComboBox);
         centerPanel.add(roomNumber);
         centerPanel.add(roomNumberListComboBox);
+        centerPanel.add(getRoomNumberOnType);
         centerPanel.add(discountCode);
         centerPanel.add(discountTextField);
         centerPanel.add(addReservationButton);
-        centerPanel.add(getRoomNumberOnType);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -683,6 +719,31 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+
+    public void printAllHotels(HotelModel model){
+        centerPanel.removeAll();
+        centerPanel.setLayout(new FlowLayout());
+
+        displayArea = new JTextArea(20, 20);
+        displayArea.setEditable(false);
+
+        for (Hotel hotel : model.getHotels()) {
+            displayArea.append(hotel.getName() + "\n");
+            displayArea.append("Number of Rooms: " + hotel.getRooms().size() + "\n");
+            displayArea.append("Earnings Per Month: " + hotel.getEarningsPerMonth() + "\n");
+            displayArea.append("\n");
+        }
+
+        centerPanel.add(new JScrollPane(displayArea));
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    public void setPrintHotelsButtonListener(ActionListener listener) {
+        printHotelsButton.addActionListener(listener);
+    }
+
     public void setSearchRoomButtonListener(ActionListener listener) {
         searchRoomButton.addActionListener(listener);
     }
@@ -751,6 +812,10 @@ public class MainView extends JFrame {
     public void setRemoveHotelButtonListener(ActionListener listener) {
         removeHotel.addActionListener(listener);
     }
+
+    public void setDatePriceModifierButtonListener(ActionListener listener) {
+        datePriceModifier.addActionListener(listener);
+    }
     
 
     public void setSimulateBookingButtonListener(ActionListener listener) {
@@ -768,11 +833,6 @@ public class MainView extends JFrame {
     public void getRoomNumberOnTypeListener(ActionListener listener) {
         getRoomNumberOnType.addActionListener(listener);
     }
-    
-
-
-
-
     
 
     public String getHotelName() {
