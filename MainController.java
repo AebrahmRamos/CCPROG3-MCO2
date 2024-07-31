@@ -381,15 +381,8 @@ public class MainController {
                     reservation.updateTotalPrice(hotel.getModifiedDates());
                     //apply discount
                     discountCode = view.getDiscountCode();
-                    // boolean discountApplied = reservation.applyDiscount(discountCode, hotel.getModifiedDates());
 
-                    // apply the discount code with the updated total price
                     reservation.discountApplication(discountCode, hotel.getModifiedDates(), reservation);
-
-                    //use the discountApplication method
-
-                    
-                    // Update total price based on modified dates
                     
                     hotel.addReservation(reservation);
                     room.addReservation(reservation);
