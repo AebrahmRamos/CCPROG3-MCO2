@@ -201,26 +201,23 @@ public class MainController {
 
 
     public void removeReservation() {
-        String hotelName = view.getHotelName();
-        String guestName = view.getCustomerName();
-    
-        Hotel hotel = model.findHotelByName(hotelName);
-        if (hotel != null) {
-            boolean reservationFound = false;
-            for (Reservation reservation : hotel.getReservations()) {
-                if (reservation.getGuestName().equalsIgnoreCase(guestName)) {
+        // remove a reservation given the hotel name, guest name
+        view.setRemoveReservationButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            String guestName = view.getCustomerName();
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                Reservation reservation = hotel.getReservations().stream().filter(r -> r.getGuestName().equalsIgnoreCase(guestName)).findFirst().orElse(null);
+                if (reservation != null) {
                     hotel.removeReservation(reservation);
-                    reservationFound = true;
                     JOptionPane.showMessageDialog(view, "Reservation removed successfully.");
-                    break;
+                } else {
+                    JOptionPane.showMessageDialog(view, "Reservation not found.");
                 }
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
-            if (!reservationFound) {
-                JOptionPane.showMessageDialog(view, "No reservations found for the guest.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-        }
+        });
     }
 
     
@@ -252,7 +249,7 @@ public class MainController {
             try {
                 int numRooms = Integer.parseInt(numRoomsText);
                 Hotel hotel = model.findHotelByName(hotelName);
-                if (hotel != null && hotel.getRooms().size() + numRooms <= 50) {
+                if (hotel != null && hotel.getRooms().size() + numRooms <= 50 && numRooms >= 1 && numRooms <= 50) {
                     if(confirmation == JOptionPane.NO_OPTION) {
                         return;
                     }
@@ -283,14 +280,16 @@ public class MainController {
             int confirmation = yesNoOption("Are you sure you want to remove the room?", "Remove Room");
             if (hotel != null) {
                 Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
-                if (room != null ) {
-                    if(confirmation == JOptionPane.NO_OPTION) {
-                        return;
+                if(room.getReservations().size() == 0) {
+                    if (room != null) { // room number matches
+                        if(confirmation == JOptionPane.NO_OPTION) {
+                            return;
+                        }
+                        hotel.getRooms().remove(room);
+                        JOptionPane.showMessageDialog(view, "Room removed successfully.");
                     }
-                    hotel.getRooms().remove(room);
-                    JOptionPane.showMessageDialog(view, "Room removed successfully.");
                 } else {
-                    JOptionPane.showMessageDialog(view, "Room not found.");
+                    JOptionPane.showMessageDialog(view, "Cannot remove room. Room is occupied.");
                 }
             } else {
                 JOptionPane.showMessageDialog(view, "Hotel not found.");
@@ -304,11 +303,15 @@ public class MainController {
             Hotel hotel = model.findHotelByName(hotelName);
             int confirmation = yesNoOption("Are you sure you want to remove the hotel?", "Remove Hotel");
             if (hotel != null) {
-                if(confirmation == JOptionPane.NO_OPTION) {
-                    return;
+                if(hotel.getReservations().size() == 0) {
+                    if(confirmation == JOptionPane.NO_OPTION) {
+                        return;
+                    }
+                    model.removeHotel(hotel);
+                    JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(view, "Cannot remove hotel. There are reservations in the hotel.");
                 }
-                model.removeHotel(hotel);
-                JOptionPane.showMessageDialog(view, "Hotel removed successfully.");
             } else {
                 JOptionPane.showMessageDialog(view, "Hotel not found.");
             }

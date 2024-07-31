@@ -213,7 +213,7 @@ public class Hotel {
             end = scanner.nextInt();
             System.out.println("Enter the rate: ");
             rate = scanner.nextDouble();
-        } while (start < 1 || start > 31 || end < 1 || end > 31 || rate < 0.5 || rate > 1.5 || start > end);
+        } while (start < 1 || start > 31 || end < 1 || end > 31 || rate < 0.5 || rate > 1.5 || start > end || start == end);
         
         for (int i = start; i <= end; i++) {
             this.modifiedDates.put(i, rate);
