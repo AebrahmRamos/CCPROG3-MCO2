@@ -87,8 +87,9 @@ public class MainController {
             showReservations();
         });
 
-        view.setViewNumberOfBookedandAvailableRoomsButtonListener(e -> {
+        view.setSearchAvailableRoomsButtonListener(e -> {
             view.showAvailableRooms();
+            viewAvailableRooms();
         });
     }
 
@@ -150,6 +151,33 @@ public class MainController {
             }
             } else {
             JOptionPane.showMessageDialog(view, "Hotel not found.");
+            }
+        });
+    }
+
+    /**
+     * Displays the available and occupied rooms for a given hotel, check-in date, and check-out date.
+     */
+    public void viewAvailableRooms() {
+        view.setSearchAvailableRoomsButtonListener(e -> {
+            String hotelName = view.getHotelName();
+            int checkIn = view.getCheckIn();
+            int checkOut = view.getCheckOut();
+            
+            Hotel hotel = model.findHotelByName(hotelName);
+            if (hotel != null) {
+                int availableRooms = 0;
+                int occupiedRooms = 0;
+                for (Room room : hotel.getRooms()) {
+                    if (room.isAvailable(checkIn, checkOut)) {
+                        availableRooms++;
+                    } else {
+                        occupiedRooms++;
+                    }
+                }
+                view.viewAvailableRooms(hotelName, checkIn, checkOut, availableRooms, occupiedRooms);
+            } else {
+                JOptionPane.showMessageDialog(view, "Hotel not found.");
             }
         });
     }

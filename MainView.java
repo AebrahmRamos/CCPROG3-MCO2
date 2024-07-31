@@ -18,7 +18,6 @@ public class MainView extends JFrame {
     private JTextField numRoomsField;
     private JButton submitButton;
     private JTextArea displayArea;
-    private JButton viewNumberOfBookedandAvailableRooms;
     private JButton viewSpecificRoom;
     private JButton viewReservation;
     private JButton searchButton;
@@ -50,6 +49,7 @@ public class MainView extends JFrame {
     private JComboBox<Integer> roomNumberComboBox;
     private JComboBox<Integer> roomNumberListComboBox;
     private JButton datePriceModifierButton;
+    private JButton searchAvailableRoomsButton;
 
 
 
@@ -179,12 +179,12 @@ public class MainView extends JFrame {
         viewHotelDetailsButton = new JButton("View Hotel");
         viewSpecificRoom = new JButton("View Specific Room");
         viewReservation = new JButton("View Reservation");
-        viewNumberOfBookedandAvailableRooms = new JButton("View Number of Booked and Available Rooms");
+        searchAvailableRoomsButton = new JButton("View Number of Booked and Available Rooms");
 
         centerPanel.add(viewHotelDetailsButton);
         centerPanel.add(viewSpecificRoom);
         centerPanel.add(viewReservation);
-        centerPanel.add(viewNumberOfBookedandAvailableRooms);
+        centerPanel.add(searchAvailableRoomsButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -283,10 +283,10 @@ public class MainView extends JFrame {
         JLabel hotelName = new JLabel("Search Hotel:");
         hotelNameField = new JTextField(25);
         JLabel checkIn = new JLabel("Check In:");
-        JTextField checkInField = new JTextField(2);
+        checkInField = new JTextField(2);
         JLabel checkOut = new JLabel("Check Out:");
-        JTextField checkOutField = new JTextField(2);
-        searchButton = new JButton("Search");
+        checkOutField = new JTextField(2);
+        searchAvailableRoomsButton = new JButton("Search");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelNameField);
@@ -294,7 +294,45 @@ public class MainView extends JFrame {
         centerPanel.add(checkInField);
         centerPanel.add(checkOut);
         centerPanel.add(checkOutField);
-        centerPanel.add(searchButton);
+        centerPanel.add(searchAvailableRoomsButton);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    /**
+     * Displays the available rooms information for a hotel in the center panel.
+     *
+     * @param hotelName      the name of the hotel
+     * @param checkIn        the check-in date
+     * @param checkOut       the check-out date
+     * @param availableRooms the number of available rooms
+     * @param bookedRooms    the number of booked rooms
+     */
+    public void viewAvailableRooms(String hotelName, int checkIn, int checkOut, int availableRooms, int bookedRooms) {
+        centerPanel.removeAll();
+        centerPanel.setLayout(new GridLayout(5, 1, 10, 10));
+
+        JLabel hotelNameLabel = new JLabel("Hotel Name: " + hotelName);
+        hotelNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JLabel checkInLabel = new JLabel("Check In: " + checkIn);
+        checkInLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JLabel checkOutLabel = new JLabel("Check Out: " + checkOut);
+        checkOutLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JLabel availableRoomsLabel = new JLabel("Available Rooms: " + availableRooms);
+        availableRoomsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JLabel bookedRoomsLabel = new JLabel("Booked Rooms: " + bookedRooms);
+        bookedRoomsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        centerPanel.add(hotelNameLabel);
+        centerPanel.add(checkInLabel);
+        centerPanel.add(checkOutLabel);
+        centerPanel.add(availableRoomsLabel);
+        centerPanel.add(bookedRoomsLabel);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -973,6 +1011,15 @@ public class MainView extends JFrame {
     }
 
     /**
+     * Sets the ActionListener for the searchAvailableRoomsButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
+    public void setSearchAvailableRoomsButtonListener(ActionListener listener) {
+        searchAvailableRoomsButton.addActionListener(listener);
+    }
+
+    /**
      * Sets the ActionListener for the viewHotelButton.
      * 
      * @param listener the ActionListener to be set
@@ -1024,15 +1071,6 @@ public class MainView extends JFrame {
      */
     public void setViewReservationButtonListener(ActionListener listener) {
         viewReservation.addActionListener(listener);
-    }
-
-    /**
-     * Sets the ActionListener for the viewNumberOfBookedandAvailableRoomsButton.
-     * 
-     * @param listener the ActionListener to be set
-     */
-    public void setViewNumberOfBookedandAvailableRoomsButtonListener(ActionListener listener) {
-        viewNumberOfBookedandAvailableRooms.addActionListener(listener);
     }
 
     /**
