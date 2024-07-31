@@ -78,9 +78,11 @@ public class Reservation {
     public boolean applyDiscount(String discountCode, Map<Integer, Double> modifiedDates) {
         if (discountCode.equals("I_WORK_HERE")) {
             this.totalPrice *= 0.9;
+            return true;
+            
         } else if (discountCode.equals("STAY4_GET1")) {
             if ((checkOut - checkIn) >= 5) {
-                totalPrice = 0;
+                this.totalPrice = 0;
                 for (int i = checkIn+1; i < checkOut; i++) {
                     totalPrice += room.getPrice() * modifiedDates.get(i);
                 }
@@ -92,6 +94,9 @@ public class Reservation {
                 return true;
             } 
         } 
+
+        
+        
         return false;
     }
 
