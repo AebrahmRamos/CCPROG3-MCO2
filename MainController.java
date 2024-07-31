@@ -175,7 +175,7 @@ public class MainController {
     }
 
     public void showDatePriceModifier() {
-        view.setSubmitButtonListener(e -> {
+        view.setDatePriceModifierButtonListener(e -> {
             String hotelName = view.getSelectedHotelName();
             int startDate = view.getStartDate();
             int endDate = view.getEndDate();
@@ -375,21 +375,24 @@ public class MainController {
                 if (room.isAvailable(checkIn, checkOut)) {
                     Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
                     
+                    reservation.updateTotalPrice(hotel.getModifiedDates());
                     //apply discount
                     discountCode = view.getDiscountCode();
-                    boolean discountApplied = reservation.applyDiscount(discountCode, hotel.getModifiedDates());
+                    // boolean discountApplied = reservation.applyDiscount(discountCode, hotel.getModifiedDates());
+
+                    // apply the discount code with the updated total price
+                    reservation.discountApplication(discountCode, hotel.getModifiedDates(), reservation);
+
+                    //use the discountApplication method
+
                     
                     // Update total price based on modified dates
-                    // reservation.updateTotalPrice(hotel.getModifiedDates());
                     
                     hotel.addReservation(reservation);
                     room.addReservation(reservation);
+
+                    JOptionPane.showMessageDialog(view, "Reservation added successfully.");
                     
-                    String message = "Reservation added successfully.";
-                    if (discountApplied) {
-                        message += " Discount applied.";
-                    }
-                    JOptionPane.showMessageDialog(view, message);
                 } else {
                     JOptionPane.showMessageDialog(view, "Room is not available for the selected dates.");
                 }

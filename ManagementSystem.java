@@ -591,7 +591,7 @@ public class ManagementSystem {
                                 System.out.printf("Total Price: %.2f\n", reservation.getTotal());
                                 System.out.println("Enter discount code (N/A if none): ");
                                 String discountCode = scanner.nextLine();
-                                while (!discountCode.equals("N/A") && !reservation.applyDiscount(discountCode, hotel.getModifiedDates())) {
+                                while (!discountCode.equals("N/A")) {
                                     System.out.println("Invalid discount code. Enter a valid one: ");
                                     discountCode = scanner.nextLine();
                                 }

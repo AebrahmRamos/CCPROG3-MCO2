@@ -50,6 +50,7 @@ public class MainView extends JFrame {
     private JComboBox<String> roomTypeComboBox;
     private JComboBox<Integer> roomNumberComboBox;
     private JComboBox<Integer> roomNumberListComboBox;
+    private JButton datePriceModifierButton;
 
 
 
@@ -283,7 +284,7 @@ public class MainView extends JFrame {
         changePriceButton = new JButton("Change Room Price");
         removeReservationButton = new JButton("Remove Reservation");
         removeHotel = new JButton("Remove Hotel");
-        datePriceModifier = new JButton("Modify Date Price");
+        datePriceModifierButton = new JButton("Modify Date Price");
 
         centerPanel.add(changeNameButton);
         centerPanel.add(addRoomButton);
@@ -291,7 +292,7 @@ public class MainView extends JFrame {
         centerPanel.add(changePriceButton);
         centerPanel.add(removeReservationButton);
         centerPanel.add(removeHotel);
-        centerPanel.add(datePriceModifier);
+        centerPanel.add(datePriceModifierButton);
 
 
         centerPanel.revalidate();
@@ -447,7 +448,7 @@ public class MainView extends JFrame {
         JLabel rateLabel = new JLabel("Rate:");
         rate = new JTextField(10);
         
-        submitButton = new JButton("Modify Date Price");
+        datePriceModifierButton = new JButton("Modify Date Price");
 
         centerPanel.add(hotelName);
         centerPanel.add(hotelComboBox);
@@ -457,7 +458,7 @@ public class MainView extends JFrame {
         centerPanel.add(endDate);
         centerPanel.add(rateLabel);
         centerPanel.add(rate);
-        centerPanel.add(submitButton);
+        centerPanel.add(datePriceModifierButton);
 
         centerPanel.revalidate();
         centerPanel.repaint();
@@ -794,6 +795,7 @@ public class MainView extends JFrame {
         viewHotelButton.addActionListener(listener);
     }
 
+
     public void setSearchReservationButtonListener(ActionListener listener) {
         showReservationButton.addActionListener(listener);
     }
@@ -848,7 +850,7 @@ public class MainView extends JFrame {
     }
 
     public void setDatePriceModifierButtonListener(ActionListener listener) {
-        datePriceModifier.addActionListener(listener);
+        datePriceModifierButton.addActionListener(listener);
     }
     
 

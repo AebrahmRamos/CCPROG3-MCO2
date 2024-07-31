@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 /**
  * The representation class holds the information of a reservation made by a guest
  */
@@ -74,30 +76,27 @@ public class Reservation {
         return this.room;
     }
 
+    public void discountApplication(String discountCode, Map<Integer, Double> modifiedDates, Reservation reservation) {
+        
 
-    public boolean applyDiscount(String discountCode, Map<Integer, Double> modifiedDates) {
         if (discountCode.equals("I_WORK_HERE")) {
-            this.totalPrice *= 0.9;
-            return true;
+            reservation.setTotalPrice(reservation.getTotal() * 0.9);
+            JOptionPane.showMessageDialog(null, "Discount applied successfully!");
             
         } else if (discountCode.equals("STAY4_GET1")) {
             if ((checkOut - checkIn) >= 5) {
-                this.totalPrice = 0;
+                reservation.setTotalPrice(0);
                 for (int i = checkIn+1; i < checkOut; i++) {
-                    totalPrice += room.getPrice() * modifiedDates.get(i);
+                    reservation.setTotalPrice(reservation.getTotal() + room.getPrice() * modifiedDates.get(i));
                 }
-                return true;
+                JOptionPane.showMessageDialog(null, "Discount applied successfully!");
             } 
         } else if (discountCode.equals("PAYDAY")){
             if (checkIn <= 15 && checkOut > 15 || checkIn <= 30 && checkOut > 30) {
-                this.totalPrice *= 0.93;
-                return true;
+                reservation.setTotalPrice(reservation.getTotal() * 0.93);
+                JOptionPane.showMessageDialog(null, "Discount applied successfully!");
             } 
         } 
-
-        
-        
-        return false;
     }
 
     public void updateTotalPrice(Map<Integer, Double> modifiedDates) {
@@ -105,6 +104,10 @@ public class Reservation {
         for (int i = checkIn; i < checkOut; i++) {
             totalPrice += room.getPrice() * modifiedDates.get(i+1);
         }
+    }
+
+    public void setTotalPrice(double price) {
+        this.totalPrice = price;
     }
 
 }
