@@ -76,6 +76,13 @@ public class Reservation {
         return this.room;
     }
 
+    /**
+     * Applies a discount to the reservation based on the provided discount code.
+     * 
+     * @param discountCode The discount code to apply.
+     * @param modifiedDates A map containing modified dates and their corresponding prices.
+     * @param reservation The reservation to apply the discount to.
+     */
     public void discountApplication(String discountCode, Map<Integer, Double> modifiedDates, Reservation reservation) {
         
 
@@ -99,6 +106,11 @@ public class Reservation {
         } 
     }
 
+    /**
+     * Updates the total price of the reservation based on the modified dates and the price of the room.
+     * 
+     * @param modifiedDates a map containing the modified dates and their corresponding multipliers
+     */
     public void updateTotalPrice(Map<Integer, Double> modifiedDates) {
         totalPrice = 0;
         for (int i = checkIn; i < checkOut; i++) {
@@ -106,6 +118,11 @@ public class Reservation {
         }
     }
 
+    /**
+     * Sets the total price of the reservation.
+     * 
+     * @param price the total price of the reservation
+     */
     public void setTotalPrice(double price) {
         this.totalPrice = price;
     }

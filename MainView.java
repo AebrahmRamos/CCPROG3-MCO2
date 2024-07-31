@@ -28,7 +28,6 @@ public class MainView extends JFrame {
     private JButton changePriceButton;
     private JButton removeReservationButton;
     private JButton removeHotel;   
-    private JButton datePriceModifier;
     private JButton addReservationButton;
     private JButton viewHotelDetailsButton;
     private JButton getRoomNumberOnType;
@@ -54,7 +53,9 @@ public class MainView extends JFrame {
 
 
 
-
+    /*
+     * Constructor for the MainView class
+     */
     public MainView() {
         // Set up the frame
         this.setTitle("Hotel Management System");
@@ -68,6 +69,9 @@ public class MainView extends JFrame {
         init();
     }
 
+    /*
+     * Initializes the components of the MainView
+     */
     private void init() {
         // NORTH PANEL
         JPanel northPanel = new JPanel();
@@ -119,7 +123,10 @@ public class MainView extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
-    void displayDefaultCenterPanel() {
+    /*
+     * Displays the default center panel
+     */
+    public void displayDefaultCenterPanel() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
 
@@ -133,6 +140,10 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+
+    /*
+     * shows the add hotel form
+     */
     public void showAddHotelForm() {
         centerPanel.removeAll();
         //set to a gridlayout but not thick
@@ -157,8 +168,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
-    
-
+    /*
+     * Shows the view hotel options
+     */
     public void showViewHotelOptions() {
         centerPanel.removeAll();
         centerPanel.setLayout(new GridLayout(4, 1, 10, 10));
@@ -178,6 +190,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /* 
+     * shows the hotel overview form
+     */
     public void showHotelOverviewForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -194,6 +209,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the room overview form
+     */
     public void showRoomOverviewForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -215,6 +233,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the reservation overview form
+     */
     public void showReservationsForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -235,6 +256,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the hotels form
+     */
     public void showHotels() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -248,6 +272,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the available rooms form
+     */
     public void showAvailableRooms() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -273,6 +300,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the manage hotel form
+     */
     public void showManageHotel() {
         centerPanel.removeAll();
         centerPanel.setLayout(new GridLayout(6, 2, 10, 10));
@@ -299,6 +329,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the change hotel name form
+     */
     public void showChangeHotelName() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -320,6 +353,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the add room form
+     */
     public void showAddRoomForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -345,6 +381,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the remove room form
+     */
     public void showRemoveRoomForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -367,6 +406,9 @@ public class MainView extends JFrame {
     }
 
 
+    /*
+     * shows the change price form
+     */
     public void showChangePriceForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -392,6 +434,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the remove reservation form
+     */
     public void showRemoveReservationForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -413,6 +458,9 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /*
+     * shows the remove hotel form
+     */
     public void showRemoveHotelForm() {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -430,6 +478,12 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+   
+    /**
+     * Displays the form for modifying the date and price of a hotel.
+     * 
+     * @param model The HotelModel object containing the list of hotels.
+     */
     public void showDatePriceModifierForm(HotelModel model) {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -464,6 +518,13 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+
+    /**
+     * Retrieves an array of available room numbers based on the given hotel model.
+     * 
+     * @param model The hotel model containing the list of hotels.
+     * @return An array of available room numbers, or null if no rooms are available.
+     */
     public Integer[] getAvailableRoomNumber(HotelModel model) {
         Hotel hotel = model.findHotelByName(hotelNameField.getText());
         String roomType = roomTypeComboBox.getSelectedItem().toString().toLowerCase();
@@ -471,14 +532,9 @@ public class MainView extends JFrame {
         int checkOut = checkOutField.getText() != null && !checkOutField.getText().isEmpty() ? Integer.parseInt(checkOutField.getText()) : 0;
         Integer[] array = new Integer[50];
         int i = 0;
-        // System.out.println("Start getAvailableRoomNumber");
-        // System.out.println("Hotel: " + hotel.getName());
-        // System.out.println("Room Type To Check " + roomType);
-        // System.out.println("Check In: " + checkIn);
-        // System.out.println("Check Out: " + checkOut);
+
         for (Room room : hotel.getRooms()) {
-            // System.out.println("Room: " + room.getRoomNumber());
-            // System.out.println("Room Type: " + room.getRoomType() + " || Value: " + room.getRoomType().equals(roomType));
+
             if (room.getRoomType().equals(roomType) || roomType.equals("all")) {
                 if (!roomOccupied(hotel, hotel.getName(), room.getRoomNumber(), checkIn, checkOut)) {
                     System.out.println("Room " + room.getRoomNumber() + " available");
@@ -499,17 +555,32 @@ public class MainView extends JFrame {
         
     
         System.out.println("Length: " + i);
-        // System.out.println("Result: ");
-        // for (int j = 0; j < i; j++) {
-        //     System.out.println(result[j]);
-        // }
         return null;
     }
 
+    /**
+     * Checks if two date ranges overlap.
+     *
+     * @param checkIn1  the check-in date of the first range
+     * @param checkOut1 the check-out date of the first range
+     * @param checkIn2  the check-in date of the second range
+     * @param checkOut2 the check-out date of the second range
+     * @return true if the date ranges overlap, false otherwise
+     */
     public boolean datesOverlap(int checkIn1, int checkOut1, int checkIn2, int checkOut2) {
         return (checkIn1 < checkOut2 && checkOut1 > checkIn2);
     }
 
+    /**
+     * Checks if a room in a hotel is occupied during a specified period.
+     * 
+     * @param hotel the hotel object containing the rooms and reservations
+     * @param hotelName the name of the hotel
+     * @param roomNumber the number of the room to check
+     * @param checkIn the check-in date of the period to check
+     * @param checkOut the check-out date of the period to check
+     * @return true if the room is occupied during the specified period, false otherwise
+     */
     public boolean roomOccupied(Hotel hotel, String hotelName, int roomNumber, int checkIn, int checkOut) {
         for (Room room : hotel.getRooms()) {
             if (room.getRoomNumber() == roomNumber) {
@@ -523,6 +594,12 @@ public class MainView extends JFrame {
         return false;
     }
 
+    /**
+     * Displays the booking form on the main view.
+     * 
+     * @param hotelNames The list of hotel names to populate the hotel combo box.
+     * @param model The HotelModel object used to retrieve available room numbers.
+     */
     public void showBooking(ArrayList<String> hotelNames, HotelModel model) {
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout(1, 3, 10));
@@ -586,42 +663,92 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /**
+     * Returns the name of the selected hotel from the hotelComboBox.
+     *
+     * @return the name of the selected hotel
+     */
     public String getSelectedHotelName() {
         return (String) hotelComboBox.getSelectedItem();
     }
 
+    /**
+     * Retrieves the selected room type from the roomTypeComboBox.
+     *
+     * @return The selected room type as a String.
+     */
     public String getRoomType() {
         return (String) roomTypeComboBox.getSelectedItem();
     }
 
+    /**
+     * Returns the selected room number from the roomNumberListComboBox.
+     *
+     * @return The selected room number as an integer.
+     */
     public int getSelectedRoomNumber() {
         return (int) roomNumberListComboBox.getSelectedItem();
     }
 
+    /**
+     * Retrieves the selected room number from the room number field as an integer.
+     *
+     * @return The selected room number as an integer.
+     */
     public int getSelectedRoomNumberNonCombo() {
         return Integer.parseInt(roomNumberField.getText());
     }
 
+    /**
+     * Displays a message dialog with the specified message.
+     *
+     * @param message the message to be displayed
+     */
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
 
+    /**
+     * Retrieves the discount code entered by the user.
+     *
+     * @return the discount code entered in the discountTextField
+     */
     public String getDiscountCode() {
         return discountTextField.getText();
     }
 
+    /**
+     * Retrieves the start date from the text field.
+     * 
+     * @return The start date as an integer.
+     */
     public int getStartDate(){
         return Integer.parseInt(startDate.getText());
     }
 
+    /**
+     * Retrieves the end date from the text field.
+     *
+     * @return The end date as an integer.
+     */
     public int getEndDate(){
         return Integer.parseInt(endDate.getText());
     }
 
+    /**
+     * Retrieves the rate value entered by the user.
+     * 
+     * @return The rate value as a double.
+     */
     public double getRate(){
         return Double.parseDouble(rate.getText());
     }
 
+    /**
+     * Sets the room numbers in the roomNumberComboBox.
+     * 
+     * @param roomNumbers the list of room numbers to be set
+     */
     public void setRoomNumbers(List<Integer> roomNumbers) {
         roomNumberComboBox.removeAllItems();
         for (int roomNumber : roomNumbers) {
@@ -630,6 +757,15 @@ public class MainView extends JFrame {
     }
 
 
+    /**
+     * Displays the reservation information on the center panel.
+     * 
+     * @param roomNumber the room number of the reservation
+     * @param guestName the name of the guest
+     * @param checkIn the check-in date of the reservation
+     * @param checkOut the check-out date of the reservation
+     * @param total the total price of the reservation
+     */
     public void displayReservationInformation(int roomNumber, String guestName, int checkIn, int checkOut, double total) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());
@@ -670,6 +806,14 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /**
+     * Displays the information of a room in the center panel.
+     *
+     * @param roomNumber   the room number
+     * @param roomType     the room type
+     * @param price        the price of the room
+     * @param isAvailable  the availability of the room
+     */
     public void displayRoomInformation(int roomNumber, String roomType, double price, boolean isAvailable) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());
@@ -705,6 +849,13 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /**
+     * Displays the hotel information on the center panel.
+     * 
+     * @param hotelName The name of the hotel.
+     * @param numRooms The number of rooms in the hotel.
+     * @param earningsPerMonth The earnings per month for the hotel.
+     */
     public void displayHotelInformation(String hotelName, int numRooms, double earningsPerMonth) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());
@@ -740,6 +891,11 @@ public class MainView extends JFrame {
     
     
 
+    /**
+     * Displays the given text in the center panel of the MainView.
+     * 
+     * @param text the text to be displayed
+     */
     public void display(String text) {
         centerPanel.removeAll();
         centerPanel.setLayout(new BorderLayout());
@@ -755,6 +911,11 @@ public class MainView extends JFrame {
     }
 
 
+    /**
+     * Prints all hotels in the given HotelModel.
+     * 
+     * @param model the HotelModel containing the hotels to be printed
+     */
     public void printAllHotels(HotelModel model){
         centerPanel.removeAll();
         centerPanel.setLayout(new FlowLayout());
@@ -775,120 +936,246 @@ public class MainView extends JFrame {
         centerPanel.repaint();
     }
 
+    /**
+     * Sets the ActionListener for the printHotelsButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setPrintHotelsButtonListener(ActionListener listener) {
         printHotelsButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the searchRoomButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setSearchRoomButtonListener(ActionListener listener) {
         searchRoomButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the addHotelButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setAddHotelButtonListener(ActionListener listener) {
         addHotelButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the submitButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setSubmitButtonListener(ActionListener listener) {
         submitButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the viewHotelButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setViewHotelButtonListener(ActionListener listener) {
         viewHotelButton.addActionListener(listener);
     }
 
-
+    /**
+     * Sets the ActionListener for the showReservationButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setSearchReservationButtonListener(ActionListener listener) {
         showReservationButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the viewHotelDetailsButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setViewHotelDetailsButtonListener(ActionListener listener) {
         viewHotelDetailsButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the viewSpecificRoomButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setViewSpecificRoomButtonListener(ActionListener listener) {
         viewSpecificRoom.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the searchButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setSearchHotelButtonListener(ActionListener listener) {
         searchButton.addActionListener(listener);
     }
 
-
+    /**
+     * Sets the ActionListener for the showAvailableRoomsButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setViewReservationButtonListener(ActionListener listener) {
         viewReservation.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the viewNumberOfBookedandAvailableRoomsButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setViewNumberOfBookedandAvailableRoomsButtonListener(ActionListener listener) {
         viewNumberOfBookedandAvailableRooms.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the simulateBookingButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setManageHotelButtonListener(ActionListener listener) {
         manageHotelButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the changeNameButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setChangeNameButtonListener(ActionListener listener) {
         changeNameButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the addRoomButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setAddRoomButtonListener(ActionListener listener) {
         addRoomButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the removeRoomButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setRemoveRoomButtonListener(ActionListener listener) {
         removeRoomButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the changePriceButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setChangePriceButtonListener(ActionListener listener) {
         changePriceButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the removeReservationButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setRemoveReservationButtonListener(ActionListener listener) {
         removeReservationButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the removeHotelButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setRemoveHotelButtonListener(ActionListener listener) {
         removeHotel.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the datePriceModifierButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setDatePriceModifierButtonListener(ActionListener listener) {
         datePriceModifierButton.addActionListener(listener);
     }
     
-
+    /**
+     * Sets the ActionListener for the addReservationButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setSimulateBookingButtonListener(ActionListener listener) {
         simulateBookingButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the exitButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setAddReservationButtonListener(ActionListener listener) {
         addReservationButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the exitButton.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void setExitButtonListener(ActionListener listener) {
         exitButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the ActionListener for the getRoomNumberOnType button.
+     * 
+     * @param listener the ActionListener to be set
+     */
     public void getRoomNumberOnTypeListener(ActionListener listener) {
         getRoomNumberOnType.addActionListener(listener);
     }
     
-
+    /**
+     * Retrieves the hotel name from the hotelNameField.
+     * 
+     * @return the hotel name as a String
+     */
     public String getHotelName() {
         return hotelNameField.getText();
     }
 
+    /**
+     * Retrieves the number of rooms from the numRoomsField.
+     * 
+     * @return the number of rooms as a String
+     */
     public String getNumRooms() {
         return numRoomsField.getText();
     }
 
-    public int getRoomNumber() {
-        // String roomNumberText;
-        // int roomNumberInteger;
-        // roomNumberText = roomNumberField.getText();
-        // roomNumberInteger = Integer.parseInt(roomNumberText);
 
-        // return roomNumberInteger;
+    /**
+     * Returns the selected room number from the roomNumberListComboBox.
+     *
+     * @return the selected room number
+     */
+    public int getRoomNumber() {
         return (int) roomNumberListComboBox.getSelectedItem();
     }
 
+    /**
+     * Retrieves the room number from the text field.
+     * 
+     * @return The room number as an integer.
+     */
     public int getRoomNumberNonComboBox() {
         String roomNumberText;
         int roomNumberInteger;
@@ -898,26 +1185,56 @@ public class MainView extends JFrame {
         return roomNumberInteger;
     }
 
+    /**
+     * Retrieves the new hotel name from the newHotelNameField.
+     * 
+     * @return the new hotel name as a String
+     */
     public String getNewHotelName() {
         return newHotelNameField.getText();
     }
 
+    /**
+     * Retrieves the new room type from the newRoomTypeField.
+     * 
+     * @return the new room type as a String
+     */
     public String getNewRoomType() {
         return newRoomType.getText();
     }
 
+    /**
+     * Retrieves the new price from the newPriceField.
+     * 
+     * @return the new price as a String
+     */
     public String getNewPrice() {
         return newPriceField.getText();
     }
 
+    /**
+     * Retrieves the guest name from the guestNameField.
+     * 
+     * @return the guest name as a String
+     */
     public String getCustomerName() {
         return guestNameField.getText();
     }
 
+    /**
+     * Retrieves the selected hotel from the hotelComboBox.
+     * 
+     * @return the selected hotel as a String
+     */
     public String getSelectedHotel() {
         return selectedHotelField.getText();
     }
 
+    /**
+     * Retrieves the check-in date from the checkInField.
+     * 
+     * @return the check-in date as an integer
+     */
     public int getCheckIn() {
         //turn the string into an integer
         String checkInText;
@@ -928,6 +1245,11 @@ public class MainView extends JFrame {
         return checkInInteger;
     }
 
+    /**
+     * Retrieves the check-out date from the checkOutField.
+     * 
+     * @return the check-out date as an integer
+     */
     public int getCheckOut() {
         //turn the string into an integer
         String checkOutText;
@@ -938,6 +1260,11 @@ public class MainView extends JFrame {
         return checkOutInteger;
     }
 
+    /**
+     * Displays the reservations in a formatted manner.
+     * 
+     * @param reservations the list of reservations to be displayed
+     */
     public void displayReservations(ArrayList<Reservation> reservations) {
         String text = "";
         for (Reservation reservation : reservations) {

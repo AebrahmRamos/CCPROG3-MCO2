@@ -202,6 +202,11 @@ public class Hotel {
     }
 
 
+    /**
+     * Adds modified dates and rates to the hotel's modifiedDates map.
+     * 
+     * @param scanner the Scanner object used to get user input
+     */
     public void addModifiedDates(Scanner scanner){
         int start, end;
         double rate;
@@ -221,6 +226,13 @@ public class Hotel {
         }
     }
 
+    /**
+     * Adds modified dates and their corresponding rates to the hotel's collection of modified dates.
+     * 
+     * @param start the starting date
+     * @param end the ending date
+     * @param rate the rate to be applied to the modified dates
+     */
     public void addModifiedDates(int start, int end, double rate){
         for (int i = start; i <= end; i++) {
             this.modifiedDates.put(i, rate);
@@ -228,10 +240,21 @@ public class Hotel {
         }
     }
 
+    /**
+     * Returns a map containing the modified dates of the hotel.
+     *
+     * @return a map with integer keys representing the date and double values representing the modification factor
+     */
     public Map<Integer, Double> getModifiedDates(){
         return modifiedDates;
     }
 
+    /**
+     * Returns a list of room numbers based on the specified room type.
+     *
+     * @param type the room type to filter the room numbers
+     * @return a list of room numbers that match the specified room type
+     */
     public List<Integer> getRoomNumberOnType(String type) {
         List<Integer> roomNumbers = new ArrayList<>();
         for (Room room : rooms) {

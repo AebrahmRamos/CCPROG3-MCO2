@@ -4,6 +4,10 @@ import javax.swing.JOptionPane;
 
 
 // Controller Class
+/**
+ * The MainController class is responsible for controlling the main functionality of the application.
+ * It handles user interactions with the view and updates the model accordingly.
+ */
 public class MainController {
     private HotelModel model;
     private MainView view;
@@ -43,7 +47,9 @@ public class MainController {
     }
 
 
-
+    /*
+     * Add a hotel to the model
+     */
     public void addHotel() {
         view.setSubmitButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -62,6 +68,9 @@ public class MainController {
         });
     }
 
+    /**
+     * View the hotel
+     */
     public void viewHotel() {
         view.setViewHotelDetailsButtonListener(e -> {
             view.showHotelOverviewForm();
@@ -83,6 +92,9 @@ public class MainController {
         });
     }
 
+    /**
+     * View the hotel information
+     */
     public void viewHotelInformation() {
         view.setSearchHotelButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -95,6 +107,9 @@ public class MainController {
         });
     }
 
+    /**
+     * View the specific room information
+     */
     public void viewSpecificRoom() {
         view.setSearchRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -114,8 +129,10 @@ public class MainController {
     }
 
 
+    /**
+     * Show the reservations
+     */
     public void showReservations() {
-        //show the reservations of a guest in a hotel displaying the room number, check-in and check-out dates, and the total price of the reservation
         view.setSearchReservationButtonListener(e -> {
             String hotelName = view.getHotelName();
             String guestName = view.getCustomerName();
@@ -137,6 +154,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Manage the hotel
+     */
     public void manageHotel() {
         view.setChangeNameButtonListener(e -> {
             view.showChangeHotelName();
@@ -174,6 +194,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Show the date price modifier
+     */
     public void showDatePriceModifier() {
         view.setDatePriceModifierButtonListener(e -> {
             String hotelName = view.getSelectedHotelName();
@@ -199,7 +222,9 @@ public class MainController {
         });
     }
 
-
+    /**
+     * Add a reservation
+     */
     public void removeReservation() {
         // remove a reservation given the hotel name, guest name
         view.setRemoveReservationButtonListener(e -> {
@@ -221,7 +246,9 @@ public class MainController {
     }
 
     
-
+    /**
+     * Change the hotel name
+     */
     public void changeHotelName() {
         view.setChangeNameButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -240,6 +267,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Add a room
+     */
     public void addRoom() {
         view.setAddRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -272,6 +302,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Remove a room
+     */
     public void removeRoom() {
         view.setRemoveRoomButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -297,6 +330,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Remove a hotel
+     */
     public void removeHotel() {
         view.setRemoveHotelButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -318,6 +354,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Change the price of a room
+     */
     public void changePrice() {
         view.setChangePriceButtonListener(e -> {
             String hotelName = view.getHotelName();
@@ -354,6 +393,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Displays the reservation form with the list of hotel names and the hotel model.
+     * 
+     * @param model The hotel model containing the list of hotels.
+     */
     private void showReservationForm(HotelModel model) {
         ArrayList<String> hotelNames = new ArrayList<>();
         for (Hotel hotel : model.getHotels()) {
@@ -363,6 +407,11 @@ public class MainController {
         view.setAddReservationButtonListener(e -> addReservation(model.getHotels()));
     }
 
+    /**
+     * Adds a reservation to the specified list of hotels.
+     * 
+     * @param hotels the list of hotels to add the reservation to
+     */
     private void addReservation(ArrayList<Hotel> hotels) {
         String hotelName = view.getHotelName();
         String guestName = view.getCustomerName();
@@ -379,7 +428,7 @@ public class MainController {
                     Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
                     
                     reservation.updateTotalPrice(hotel.getModifiedDates());
-                    //apply discount
+
                     discountCode = view.getDiscountCode();
 
                     reservation.discountApplication(discountCode, hotel.getModifiedDates(), reservation);
@@ -400,6 +449,16 @@ public class MainController {
         }
     }
 
+    /**
+     * Displays a dialog box with a yes/no option and returns the user's choice.
+     *
+     * @param message the message to display in the dialog box
+     * @param title the title of the dialog box
+     * @return an integer representing the user's choice:
+     *         - {@link JOptionPane#YES_OPTION} if the user selects "Yes"
+     *         - {@link JOptionPane#NO_OPTION} if the user selects "No"
+     *         - {@link JOptionPane#CLOSED_OPTION} if the user closes the dialog box
+     */
     public int yesNoOption(String message, String title) {
         int confirmation = JOptionPane.showConfirmDialog(view, message, title, JOptionPane.YES_NO_OPTION);
         return confirmation;

@@ -20,10 +20,20 @@
             this.roomType = "standard";
         }
 
+        /**
+         * Sets the room type of the room.
+         * 
+         * @param roomType the new room type to be set
+         */
         public void setRoomType(String roomType) {
             this.roomType = roomType;
         }
 
+        /**
+         * Returns the type of the room.
+         *
+         * @return the room type
+         */
         public String getRoomType() {
             return this.roomType;
         }
