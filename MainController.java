@@ -327,14 +327,20 @@ public class MainController {
                 if (hotel != null) {
                     
                     Room room = hotel.getRooms().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().orElse(null);
-                    if (room != null) {
+                    if (room != null && newPrice > 0) {
+                        // check if there are no current reservations in the entire hotel
+                        boolean noReservations = hotel.getReservations().isEmpty();
+                        if (!noReservations) {
+                            JOptionPane.showMessageDialog(view, "Cannot change price. There are reservations in the hotel.");
+                            return;
+                        }
                         if(confirmation == JOptionPane.NO_OPTION) {
                             return;
                         }
                         room.setPrice(newPrice);
                         JOptionPane.showMessageDialog(view, "Price changed successfully.");
                     } else {
-                        JOptionPane.showMessageDialog(view, "Room not found.");
+                        JOptionPane.showMessageDialog(view, "Error changing price.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(view, "Hotel not found.");
@@ -360,7 +366,7 @@ public class MainController {
         int roomNumber = view.getRoomNumber();
         int checkIn = view.getCheckIn();
         int checkOut = view.getCheckOut();
-        String discountCode = view.getDiscountCode();
+        String discountCode;
         
         Hotel hotel = hotels.stream().filter(h -> h.getName().equalsIgnoreCase(hotelName)).findFirst().orElse(null);
         if (hotel != null) {
@@ -369,11 +375,12 @@ public class MainController {
                 if (room.isAvailable(checkIn, checkOut)) {
                     Reservation reservation = new Reservation(room, guestName, checkIn, checkOut);
                     
-                    // Apply discount
+                    //apply discount
+                    discountCode = view.getDiscountCode();
                     boolean discountApplied = reservation.applyDiscount(discountCode, hotel.getModifiedDates());
                     
                     // Update total price based on modified dates
-                    reservation.updateTotalPrice(hotel.getModifiedDates());
+                    // reservation.updateTotalPrice(hotel.getModifiedDates());
                     
                     hotel.addReservation(reservation);
                     room.addReservation(reservation);
